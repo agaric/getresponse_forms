@@ -1,9 +1,9 @@
-Create pages and blocks for subscribing to MailChimp lists anywhere on your
-Drupal site. This module requires the [Entity module](http://www.drupal.org/project/entity).
+Create blocks for subscribing to GetResponse lists anywhere on your
+Drupal site. This module requires the [GetResponse module](http://www.drupal.org/project/getresponse).
 
 ## Installation
 
-1. Enable the MailChimp Signup module and the Entity Module
+1. Enable the GetResponse Forms module and the Entity Module
 
 2. If you haven't done so already, add a list in your MailChimp account. You can
 follow these directions provided by MailChimp on how to 

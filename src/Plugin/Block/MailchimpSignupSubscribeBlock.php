@@ -10,7 +10,7 @@ use Drupal\Core\Block\BlockBase;
  * @Block(
  *   id = "getresponse_forms_subscribe_block",
  *   admin_label = @Translation("Subscribe Block"),
- *   category = @Translation("MailChimp Signup"),
+ *   category = @Translation("GetResponse Forms"),
  *   module = "getresponse_forms",
  *   deriver = "Drupal\getresponse_forms\Plugin\Derivative\GetresponseFormsSubscribeBlock"
  * )

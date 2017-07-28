@@ -5,7 +5,7 @@ namespace Drupal\getresponse_forms\Plugin\Derivative;
 use Drupal\Component\Plugin\Derivative\DeriverBase;
 
 /**
- * Provides block plugin definitions for MailChimp Signup blocks.
+ * Provides block plugin definitions for GetResponse Forms blocks.
  *
  * @see \Drupal\getresponse_forms\Plugin\Block\GetresponseFormsSubscribeBlock
  */

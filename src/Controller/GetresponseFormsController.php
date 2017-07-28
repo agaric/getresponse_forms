@@ -6,7 +6,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\getresponse_forms\Entity\GetresponseForms;
 
 /**
- * MailChimp Signup controller.
+ * GetResponse Forms controller.
  */
 class GetresponseFormsController extends ControllerBase {
 
