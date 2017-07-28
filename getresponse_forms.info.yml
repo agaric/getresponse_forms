@@ -1,17 +1,9 @@
 name: GetResponse Forms
 type: module
-description: MailChimp signup blocks and pages
-package: MailChimp
+description: Build GetResponse custom forms exposed as blocks.
+package: GetResponse
 # core: 8.x
-configure: mailchimp.admin.signup
+configure: getresponse.admin.forms
 
 dependencies:
-- mailchimp
-
-# configure: action.admin.config.services.mailchimp.signup
-
-# Information added by Drupal.org packaging script on 2017-07-21
-version: '8.x-1.3'
-core: '8.x'
-project: 'mailchimp'
-datestamp: 1500676746
+- getresponse
