@@ -2,7 +2,7 @@
 
 getresponse_forms.getresponse_forms.*:
   type: config_entity
-  label: 'Mailchimp Signup config'
+  label: 'Getresponse Forms config'
   mapping:
     id:
       type: string

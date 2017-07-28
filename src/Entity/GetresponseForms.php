@@ -12,7 +12,7 @@ use Drupal\getresponse_forms\GetresponseFormsInterface;
  *
  * @ConfigEntityType(
  *   id = "getresponse_forms",
- *   label = @Translation("Mailchimp Signup Form"),
+ *   label = @Translation("Getresponse Forms Form"),
  *   fieldable = FALSE,
  *   handlers = {
  *     "list_builder" = "Drupal\getresponse_forms\Controller\GetresponseFormsListBuilder",

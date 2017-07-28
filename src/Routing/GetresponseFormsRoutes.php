@@ -31,7 +31,7 @@ class GetresponseFormsRoutes {
           ),
           // Route requirements.
           array(
-            '_permission'  => 'access mailchimp signup pages',
+            '_permission'  => 'access getresponse forms pages',
           )
         );
       }
