@@ -89,26 +89,10 @@ class GetresponseFormsPageForm extends FormBase {
           '#default_value' => 0,
         );
 
-        if ($this->signup->settings['include_interest_groups'] && isset($list->intgroups)) {
-          $form['getresponse_lists'][$wrapper_key]['interest_groups'] = array(
-            '#type' => 'fieldset',
-            '#title' => t('Interest Groups for %label', array('%label' => $list->name)),
-            '#states' => array(
-              'invisible' => array(
-                ':input[name="getresponse_lists[' . $wrapper_key . '][subscribe]"]' => array('checked' => FALSE),
-              ),
-            ),
-          );
-          $form['getresponse_lists'][$wrapper_key]['interest_groups'] += mailchimp_interest_groups_form_elements($list);
-        }
       }
     }
     else {
       $list = reset($lists);
-      if ($this->signup->settings['include_interest_groups'] && isset($list->intgroups)) {
-        $form['getresponse_lists']['#weight'] = 9;
-        $form['getresponse_lists']['interest_groups'] = mailchimp_interest_groups_form_elements($list);
-      }
     }
 
     $mergevars_wrapper_id = isset($list->campaignId) ? $list->campaignId : '';
@@ -189,7 +173,6 @@ class GetresponseFormsPageForm extends FormBase {
     if (count(array_filter($this->signup->gr_lists)) == 1) {
       $subscribe_lists[0] = array(
         'subscribe' => reset($this->signup->gr_lists),
-        'interest_groups' => isset($getresponse_lists['interest_groups']) ? $getresponse_lists['interest_groups'] : NULL,
       );
     }
     else {
@@ -207,20 +190,7 @@ class GetresponseFormsPageForm extends FormBase {
     foreach ($subscribe_lists as $list_choices) {
       $list_id = $list_choices['subscribe'];
 
-      $interests = isset($list_choices['interest_groups']) ? $list_choices['interest_groups'] : array();
-      if (isset($this->signup->settings['safe_interest_groups']) && $this->signup->settings['safe_interest_groups']) {
-        $current_status = mailchimp_get_memberinfo($list_id, $email);
-        if ($current_status) {
-          $current_interests = array();
-          foreach ($current_status->interests as $id => $selected) {
-            if ($selected) {
-              $current_interests[$id] = $id;
-            }
-          }
-          $interests[] = $current_interests;
-        }
-      }
-      $result = mailchimp_subscribe($list_id, $email, $mergevars, $interests, $this->signup->settings['doublein']);
+      $result = mailchimp_subscribe($list_id, $email, $mergevars, $this->signup->settings['doublein']);
 
       if (empty($result)) {
         drupal_set_message(t('There was a problem with your newsletter signup to %list.', array(
