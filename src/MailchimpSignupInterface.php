@@ -1,13 +1,13 @@
 <?php
 
-namespace Drupal\mailchimp_signup;
+namespace Drupal\getresponse_forms;
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
 
 /**
  * Provides an interface defining the MailchimpSignup entity.
  *
- * @ingroup mailchimp_signup
+ * @ingroup getresponse_forms
  */
 interface MailchimpSignupInterface extends ConfigEntityInterface {
   

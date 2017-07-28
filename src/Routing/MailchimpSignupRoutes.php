@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\mailchimp_signup\Routing;
+namespace Drupal\getresponse_forms\Routing;
 
 use Symfony\Component\Routing\Route;
 
@@ -15,17 +15,17 @@ class MailchimpSignupRoutes {
   public function routes() {
     $routes = array();
 
-    $signups = mailchimp_signup_load_multiple();
+    $signups = getresponse_forms_load_multiple();
 
-    /* @var $signup \Drupal\mailchimp_signup\Entity\MailchimpSignup */
+    /* @var $signup \Drupal\getresponse_forms\Entity\MailchimpSignup */
     foreach ($signups as $signup) {
       if ((intval($signup->mode) == MAILCHIMP_SIGNUP_PAGE) || (intval($signup->mode) == MAILCHIMP_SIGNUP_BOTH)) {
-        $routes['mailchimp_signup.' . $signup->id] = new Route(
+        $routes['getresponse_forms.' . $signup->id] = new Route(
           // Route Path.
           '/' . $signup->settings['path'],
           // Route defaults.
           array(
-            '_controller' => '\Drupal\mailchimp_signup\Controller\MailchimpSignupController::page',
+            '_controller' => '\Drupal\getresponse_forms\Controller\MailchimpSignupController::page',
             '_title' => $signup->title,
             'signup_id' => $signup->id,
           ),

@@ -1,5 +1,5 @@
-mailchimp_signup.add:
-  route_name: 'mailchimp_signup.add'
+getresponse_forms.add:
+  route_name: 'getresponse_forms.add'
   title: 'Add Signup Form'
   appears_on:
-    - mailchimp_signup.admin
+    - getresponse_forms.admin

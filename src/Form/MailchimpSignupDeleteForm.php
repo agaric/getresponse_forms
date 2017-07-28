@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\mailchimp_signup\Form;
+namespace Drupal\getresponse_forms\Form;
 
 use Drupal\Core\Entity\EntityConfirmFormBase;
 use Drupal\Core\Url;
@@ -9,7 +9,7 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Form controller for the MailchimpSignup entity delete form.
  *
- * @ingroup mailchimp_signup
+ * @ingroup getresponse_forms
  */
 class MailchimpSignupDeleteForm extends EntityConfirmFormBase {
 
@@ -24,7 +24,7 @@ class MailchimpSignupDeleteForm extends EntityConfirmFormBase {
    * {@inheritdoc}
    */
   public function getCancelUrl() {
-    return new Url('mailchimp_signup.admin');
+    return new Url('getresponse_forms.admin');
   }
 
   /**

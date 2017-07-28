@@ -1,6 +1,6 @@
-# Schema for the configuration files of the mailchimp_signup module.
+# Schema for the configuration files of the getresponse_forms module.
 
-mailchimp_signup.mailchimp_signup.*:
+getresponse_forms.getresponse_forms.*:
   type: config_entity
   label: 'Mailchimp Signup config'
   mapping:

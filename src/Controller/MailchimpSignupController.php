@@ -1,9 +1,9 @@
 <?php
 
-namespace Drupal\mailchimp_signup\Controller;
+namespace Drupal\getresponse_forms\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\mailchimp_signup\Entity\MailchimpSignup;
+use Drupal\getresponse_forms\Entity\MailchimpSignup;
 
 /**
  * MailChimp Signup controller.
@@ -22,11 +22,11 @@ class MailchimpSignupController extends ControllerBase {
   public function page($signup_id) {
     $content = array();
 
-    $signup = mailchimp_signup_load($signup_id);
+    $signup = getresponse_forms_load($signup_id);
 
-    $form = new \Drupal\mailchimp_signup\Form\MailchimpSignupPageForm();
+    $form = new \Drupal\getresponse_forms\Form\MailchimpSignupPageForm();
 
-    $form_id = 'mailchimp_signup_subscribe_page_' . $signup->id . '_form';
+    $form_id = 'getresponse_forms_subscribe_page_' . $signup->id . '_form';
     $form->setFormID($form_id);
     $form->setSignup($signup);
 

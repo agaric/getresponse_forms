@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\mailchimp_signup\Controller;
+namespace Drupal\getresponse_forms\Controller;
 
 use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
 use Drupal\Core\Entity\EntityInterface;
@@ -10,7 +10,7 @@ use Drupal\Core\Link;
 /**
  * Provides a listing of MailchimpSignups.
  *
- * @ingroup mailchimp_signup
+ * @ingroup getresponse_forms
  */
 class MailchimpSignupListBuilder extends ConfigEntityListBuilder {
 

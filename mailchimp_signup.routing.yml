@@ -1,36 +1,36 @@
 
-mailchimp_signup.admin:
+getresponse_forms.admin:
   path: '/admin/config/services/mailchimp/signup'
   defaults:
-    _entity_list: 'mailchimp_signup'
+    _entity_list: 'getresponse_forms'
     _title: 'Signup Forms'
   requirements:
-    _permission: 'administer mailchimp_signup'
+    _permission: 'administer getresponse_forms'
     _mailchimp_configuration_access_check: 'TRUE'
 
-mailchimp_signup.add:
+getresponse_forms.add:
   path: '/admin/config/services/mailchimp/signup/add'
   defaults:
-    _entity_form: 'mailchimp_signup.add'
+    _entity_form: 'getresponse_forms.add'
     _title: 'Add Signup Form'
   requirements:
-    _permission: 'administer mailchimp_signup'
+    _permission: 'administer getresponse_forms'
 
-entity.mailchimp_signup.edit_form:
-  path: '/admin/config/services/mailchimp/signup/{mailchimp_signup}'
+entity.getresponse_forms.edit_form:
+  path: '/admin/config/services/mailchimp/signup/{getresponse_forms}'
   defaults:
-    _entity_form: 'mailchimp_signup.edit'
+    _entity_form: 'getresponse_forms.edit'
     _title: 'Edit Signup Form'
   requirements:
-    _permission: 'administer mailchimp_signup'
+    _permission: 'administer getresponse_forms'
 
-entity.mailchimp_signup.delete_form:
-  path: '/admin/config/services/mailchimp/signup/{mailchimp_signup}/delete'
+entity.getresponse_forms.delete_form:
+  path: '/admin/config/services/mailchimp/signup/{getresponse_forms}/delete'
   defaults:
-    _entity_form: 'mailchimp_signup.delete'
+    _entity_form: 'getresponse_forms.delete'
     _title: 'Delete Signup Form'
   requirements:
-    _permission: 'administer mailchimp_signup'
+    _permission: 'administer getresponse_forms'
 
 route_callbacks:
-  - '\Drupal\mailchimp_signup\Routing\MailchimpSignupRoutes::routes'
+  - '\Drupal\getresponse_forms\Routing\MailchimpSignupRoutes::routes'

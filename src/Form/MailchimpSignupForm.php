@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\mailchimp_signup\Form;
+namespace Drupal\getresponse_forms\Form;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\EntityForm;
@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Form controller for the MailchimpSignup entity edit form.
  *
- * @ingroup mailchimp_signup
+ * @ingroup getresponse_forms
  */
 class MailchimpSignupForm extends EntityForm {
 
@@ -58,7 +58,7 @@ class MailchimpSignupForm extends EntityForm {
       '#maxlength' => EntityTypeInterface::BUNDLE_MAX_LENGTH,
       '#machine_name' => array(
         'source' => array('title'),
-        'exists' => 'mailchimp_signup_load',
+        'exists' => 'getresponse_forms_load',
       ),
       '#description' => t('A unique machine-readable name for this list. It must only contain lowercase letters, numbers, and underscores.'),
       '#disabled' => !$signup->isNew(),
@@ -243,7 +243,7 @@ class MailchimpSignupForm extends EntityForm {
   public function save(array $form, FormStateInterface $form_state) {
     $mode = $form_state->getValue('mode');
 
-    /* @var $signup \Drupal\mailchimp_signup\Entity\MailchimpSignup */
+    /* @var $signup \Drupal\getresponse_forms\Entity\MailchimpSignup */
     $signup = $this->getEntity();
     $signup->mode = array_sum($mode);
 
@@ -275,13 +275,13 @@ class MailchimpSignupForm extends EntityForm {
 
     \Drupal::service('router.builder')->setRebuildNeeded();
 
-    $form_state->setRedirect('mailchimp_signup.admin');
+    $form_state->setRedirect('getresponse_forms.admin');
   }
 
 
 
   public function exist($id) {
-    $entity = $this->entityQuery->get('mailchimp_signup')
+    $entity = $this->entityQuery->get('getresponse_forms')
       ->condition('id', $id)
       ->execute();
     return (bool) $entity;

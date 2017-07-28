@@ -1,36 +1,36 @@
 <?php
 
-namespace Drupal\mailchimp_signup\Entity;
+namespace Drupal\getresponse_forms\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
-use Drupal\mailchimp_signup\MailchimpSignupInterface;
+use Drupal\getresponse_forms\MailchimpSignupInterface;
 
 /**
  * Defines the MailchimpSignup entity.
  *
- * @ingroup mailchimp_signup
+ * @ingroup getresponse_forms
  *
  * @ConfigEntityType(
- *   id = "mailchimp_signup",
+ *   id = "getresponse_forms",
  *   label = @Translation("Mailchimp Signup Form"),
  *   fieldable = FALSE,
  *   handlers = {
- *     "list_builder" = "Drupal\mailchimp_signup\Controller\MailchimpSignupListBuilder",
+ *     "list_builder" = "Drupal\getresponse_forms\Controller\MailchimpSignupListBuilder",
  *     "form" = {
- *       "add" = "Drupal\mailchimp_signup\Form\MailchimpSignupForm",
- *       "edit" = "Drupal\mailchimp_signup\Form\MailchimpSignupForm",
- *       "delete" = "Drupal\mailchimp_signup\Form\MailchimpSignupDeleteForm"
+ *       "add" = "Drupal\getresponse_forms\Form\MailchimpSignupForm",
+ *       "edit" = "Drupal\getresponse_forms\Form\MailchimpSignupForm",
+ *       "delete" = "Drupal\getresponse_forms\Form\MailchimpSignupDeleteForm"
  *     }
  *   },
- *   config_prefix = "mailchimp_signup",
- *   admin_permission = "administer mailchimp_signup",
+ *   config_prefix = "getresponse_forms",
+ *   admin_permission = "administer getresponse_forms",
  *   entity_keys = {
  *     "id" = "id",
  *     "uuid" = "uuid",
  *   },
  *   links = {
- *     "edit-form" = "/admin/config/services/mailchimp/signup/{mailchimp_signup}",
- *     "delete-form" = "/admin/config/services/mailchimp/signup/{mailchimp_signup}/delete"
+ *     "edit-form" = "/admin/config/services/mailchimp/signup/{getresponse_forms}",
+ *     "delete-form" = "/admin/config/services/mailchimp/signup/{getresponse_forms}/delete"
  *   }
  * )
  */

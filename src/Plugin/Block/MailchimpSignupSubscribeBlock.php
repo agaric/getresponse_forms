@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\mailchimp_signup\Plugin\Block;
+namespace Drupal\getresponse_forms\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 
@@ -8,11 +8,11 @@ use Drupal\Core\Block\BlockBase;
  * Provides a 'Subscribe' block.
  *
  * @Block(
- *   id = "mailchimp_signup_subscribe_block",
+ *   id = "getresponse_forms_subscribe_block",
  *   admin_label = @Translation("Subscribe Block"),
  *   category = @Translation("MailChimp Signup"),
- *   module = "mailchimp_signup",
- *   deriver = "Drupal\mailchimp_signup\Plugin\Derivative\MailchimpSignupSubscribeBlock"
+ *   module = "getresponse_forms",
+ *   deriver = "Drupal\getresponse_forms\Plugin\Derivative\MailchimpSignupSubscribeBlock"
  * )
  */
 class MailchimpSignupSubscribeBlock extends BlockBase {
@@ -23,12 +23,12 @@ class MailchimpSignupSubscribeBlock extends BlockBase {
   public function build() {
     $signup_id = $this->getDerivativeId();
 
-    /* @var $signup \Drupal\mailchimp_signup\Entity\MailchimpSignup */
-    $signup = mailchimp_signup_load($signup_id);
+    /* @var $signup \Drupal\getresponse_forms\Entity\MailchimpSignup */
+    $signup = getresponse_forms_load($signup_id);
 
-    $form = new \Drupal\mailchimp_signup\Form\MailchimpSignupPageForm();
+    $form = new \Drupal\getresponse_forms\Form\MailchimpSignupPageForm();
 
-    $form_id = 'mailchimp_signup_subscribe_block_' . $signup->id . '_form';
+    $form_id = 'getresponse_forms_subscribe_block_' . $signup->id . '_form';
     $form->setFormID($form_id);
     $form->setSignup($signup);
 
