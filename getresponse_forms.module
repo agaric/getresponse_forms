@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Creates signup forms integrated with MailChimp.
+ * Creates forms integrated with GetResponse.
  */
 
 use \Drupal\getresponse_forms\Entity\GetresponseForms;
