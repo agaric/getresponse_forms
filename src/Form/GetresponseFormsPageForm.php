@@ -105,7 +105,7 @@ class GetresponseFormsPageForm extends FormBase {
     foreach ($this->signup->settings['mergefields'] as $tag => $mergevar_str) {
       if (!empty($mergevar_str)) {
         $mergevar = unserialize($mergevar_str);
-        $form['mergevars'][$tag] = mailchimp_insert_drupal_form_tag($mergevar);
+        $form['mergevars'][$tag] = getresponse_forms_drupal_form_element($mergevar);
         if (empty($lists)) {
           $form['mergevars'][$tag]['#disabled'] = TRUE;
         }

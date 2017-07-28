@@ -48,3 +48,121 @@ function getresponse_forms_load_multiple($signup_ids = array(), $reset = FALSE) 
 
   return $controller->loadMultiple($signup_ids);
 }
+
+/**
+ * Convert GetResponse custom fields to Drupal Form API elements.
+ *
+ * @param array $field
+ *   The mailchimp-formatted form element to convert.
+ *
+ * @return array
+ *   A properly formatted drupal form element.
+ */
+function getresponse_forms_drupal_form_element($field) {
+  // Insert common FormAPI properties:
+  $input = array(
+    '#weight' => isset($field->weight) ? $field->weight : 0,
+    '#required' => isset($field->required) ? $field->required : FALSE,
+  );
+
+  if (is_string($field->name)) {
+    $input['#title'] = t('@field', array('@field' => $field->name));
+  }
+  else {
+    $input['#title'] = $field->name;
+  }
+
+  switch ($field->type) {
+    case 'address':
+      // Sub-array of address elements according to MailChimp specs.
+      // https://apidocs.mailchimp.com/api/2.0/lists/subscribe.php
+      $input['#type'] = 'container';
+      $input['#tree'] = TRUE;
+      $input['addr1'] = array(
+        '#title' => t('Address 1'),
+        '#type' => 'textfield',
+      );
+      $input['addr2'] = array(
+        '#title' => t('Address 2'),
+        '#type' => 'textfield',
+      );
+      $input['city'] = array(
+        '#title' => t('City'),
+        '#type' => 'textfield',
+      );
+      $input['state'] = array(
+        '#title' => t('State'),
+        '#type' => 'textfield',
+        '#size' => 2,
+        '#maxlength' => 2,
+      );
+      $input['zip'] = array(
+        '#title' => t('Zip'),
+        '#type' => 'textfield',
+        '#size' => 6,
+        '#maxlength' => 6,
+      );
+      $input['country'] = array(
+        '#title' => t('Country'),
+        '#type' => 'textfield',
+        '#size' => 2,
+        '#maxlength' => 2,
+      );
+      break;
+    case 'dropdown':
+      // Dropdown is mapped to <select> element in Drupal Form API.
+      $input['#type'] = 'select';
+
+      // Creates options, we must delete array keys to have relevant information
+      // on MailChimp.
+      $choices = array();
+      foreach ($field->options->choices as $choice) {
+        $choices[$choice] = $choice;
+      }
+
+      $input['#options'] = $choices;
+      break;
+
+    case 'radio':
+      // Radio is mapped to <input type='radio' /> i.e. 'radios' element in
+      // Drupal Form API.
+      $input['#type'] = 'radios';
+
+      // Creates options, we must delete array keys to have relevant information
+      // on MailChimp.
+      $choices = array();
+      foreach ($field->options->choices as $choice) {
+        $choices[$choice] = $choice;
+      }
+
+      $input['#options'] = $choices;
+      break;
+
+    case 'email':
+      if (\Drupal::service('element_info')->getInfo('emailfield', '#type')) {
+        // Set to an HTML5 email type if 'emailfield' is supported:
+        $input['#type'] = 'email';
+      }
+      else {
+        // Set to standard text type if 'emailfield' isn't defined:
+        $input['#type'] = 'textfield';
+      };
+      $input['#size'] = $field->options->size;
+      $input['#element_validate'] = array('mailchimp_validate_email');
+      break;
+
+    default:
+      // This is a standard input[type=text] or something we can't handle with
+      // Drupal FormAPI.
+      $input['#type'] = 'textfield';
+      $input['#size'] = $field->options->size;
+      break;
+  }
+
+  // Special cases for GetResponse hidden defined fields:
+  if ($field->hidden === TRUE) {
+    $input['#type'] = 'hidden';
+  }
+
+  return $input;
+}
