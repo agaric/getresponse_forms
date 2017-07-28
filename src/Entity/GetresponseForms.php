@@ -62,7 +62,7 @@ class GetresponseForms extends ConfigEntityBase implements GetresponseFormsInter
    *
    * @var array
    */
-  public $mc_lists;
+  public $gr_lists;
 
   /**
    * The Signup Form Mode (Block, Page, or Both).

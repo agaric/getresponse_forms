@@ -63,7 +63,7 @@ class GetresponseFormsPageForm extends FormBase {
 
     $form['getresponse_lists'] = array('#tree' => TRUE);
 
-    $lists = mailchimp_get_lists($this->signup->mc_lists);
+    $lists = mailchimp_get_lists($this->signup->gr_lists);
 
     $lists_count = (!empty($lists)) ? count($lists) : 0;
 
@@ -149,7 +149,7 @@ class GetresponseFormsPageForm extends FormBase {
     // ensure at least one list has been selected.
 
     // Get the enabled lists for this form.
-    $enabled_lists = array_filter($signup->mc_lists);
+    $enabled_lists = array_filter($signup->gr_lists);
     if (count($enabled_lists) > 1) {
 
       // Filter the selected lists out of the form values.
@@ -174,7 +174,7 @@ class GetresponseFormsPageForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     global $base_url;
 
-    $list_details = mailchimp_get_lists($this->signup->mc_lists);
+    $list_details = mailchimp_get_lists($this->signup->gr_lists);
 
     $subscribe_lists = array();
 
@@ -186,9 +186,9 @@ class GetresponseFormsPageForm extends FormBase {
     $getresponse_lists = $form_state->getValue('getresponse_lists');
 
     // If we only have one list we won't have checkbox values to investigate.
-    if (count(array_filter($this->signup->mc_lists)) == 1) {
+    if (count(array_filter($this->signup->gr_lists)) == 1) {
       $subscribe_lists[0] = array(
-        'subscribe' => reset($this->signup->mc_lists),
+        'subscribe' => reset($this->signup->gr_lists),
         'interest_groups' => isset($getresponse_lists['interest_groups']) ? $getresponse_lists['interest_groups'] : NULL,
       );
     }

@@ -13,15 +13,12 @@ getresponse_forms.getresponse_forms.*:
     uuid:
       type: string
       label: 'UUID'
-    mc_lists:
+    gr_lists:
       type: sequence
-      label: 'Mailchimp List(s)'
+      label: 'GetResponse List(s)'
     mode:
       type: int
       label: 'Mode'
-    mergefields:
-      type: sequence
-      label: 'Mergefields'
     description:
       type: text
       label: 'Description'

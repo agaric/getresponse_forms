@@ -132,7 +132,7 @@ class GetresponseFormsForm extends EntityForm {
       '#default_value' => isset($signup->settings['destination']) ? $signup->settings['destination'] : NULL,
     );
 
-    $form['mc_lists_config'] = array(
+    $form['gr_lists_config'] = array(
       '#type' => 'details',
       '#title' => t('MailChimp List Selection & Configuration'),
       '#open' => TRUE,
@@ -143,13 +143,13 @@ class GetresponseFormsForm extends EntityForm {
       $options[$mc_list->id] = $mc_list->name;
     }
     $mc_admin_url = Link::fromTextAndUrl('MailChimp', Url::fromUri('https://admin.mailchimp.com', array('attributes' => array('target' => '_blank'))));
-    $form['mc_lists_config']['mc_lists'] = array(
+    $form['gr_lists_config']['gr_lists'] = array(
       '#type' => 'checkboxes',
       '#title' => t('MailChimp Lists'),
       '#description' => t('Select which lists to show on your signup form. You can create additional lists at @MailChimp.',
         array('@MailChimp' => $mc_admin_url->toString())),
       '#options' => $options,
-      '#default_value' => is_array($signup->mc_lists) ? $signup->mc_lists : array(),
+      '#default_value' => is_array($signup->gr_lists) ? $signup->gr_lists : array(),
       '#required' => TRUE,
       '#ajax' => array(
         'callback' => '::mergefields_callback',
@@ -163,14 +163,14 @@ class GetresponseFormsForm extends EntityForm {
       ),
     );
 
-    $form['mc_lists_config']['mergefields'] = array(
+    $form['gr_lists_config']['mergefields'] = array(
       '#prefix' => '<div id="mergefields-wrapper">',
       '#suffix' => '</div>',
     );
 
     // Show merge fields if changing list field or editing existing list.
-    if ($form_state->getValue('mc_lists') || !$signup->isNew()) {
-      $form['mc_lists_config']['mergefields'] = array(
+    if ($form_state->getValue('gr_lists') || !$signup->isNew()) {
+      $form['gr_lists_config']['mergefields'] = array(
         '#type' => 'fieldset',
         '#title' => t('Merge Field Display'),
         '#description' => t('Select the merge fields to show on registration forms. Required fields are automatically displayed.'),
@@ -179,12 +179,12 @@ class GetresponseFormsForm extends EntityForm {
         '#weight' => 20,
       );
 
-      $mc_lists = $form_state->getValue('mc_lists') ? $form_state->getValue('mc_lists') : $signup->mc_lists;
+      $gr_lists = $form_state->getValue('gr_lists') ? $form_state->getValue('gr_lists') : $signup->gr_lists;
 
-      $mergevar_options = $this->getMergevarOptions($mc_lists);
+      $mergevar_options = $this->getMergevarOptions($gr_lists);
 
       foreach ($mergevar_options as $mergevar) {
-        $form['mc_lists_config']['mergefields'][$mergevar->tag] = array(
+        $form['gr_lists_config']['mergefields'][$mergevar->tag] = array(
           '#type' => 'checkbox',
           '#title' => Html::escape($mergevar->name),
           '#default_value' => isset($signup->settings['mergefields'][$mergevar->tag]) ? !empty($signup->settings['mergefields'][$mergevar->tag]) : TRUE,
@@ -234,7 +234,7 @@ class GetresponseFormsForm extends EntityForm {
    * AJAX callback handler for GetresponseFormsForm.
    */
   public function mergefields_callback(&$form, FormStateInterface $form_state) {
-    return $form['mc_lists_config']['mergefields'];
+    return $form['gr_lists_config']['mergefields'];
   }
 
   /**
@@ -249,9 +249,9 @@ class GetresponseFormsForm extends EntityForm {
 
     $mergefields = $form_state->getValue('mergefields');
 
-    $mc_lists = $form_state->getValue('mc_lists') ? $form_state->getValue('mc_lists') : $signup->mc_lists;
+    $gr_lists = $form_state->getValue('gr_lists') ? $form_state->getValue('gr_lists') : $signup->gr_lists;
 
-    $mergevar_options = $this->getMergevarOptions($mc_lists);
+    $mergevar_options = $this->getMergevarOptions($gr_lists);
 
     foreach ($mergefields as $id => $val) {
       if ($val) {
@@ -287,8 +287,8 @@ class GetresponseFormsForm extends EntityForm {
     return (bool) $entity;
   }
 
-  private function getMergevarOptions(array $mc_lists) {
-    $mergevar_settings = mailchimp_get_mergevars(array_filter($mc_lists));
+  private function getMergevarOptions(array $gr_lists) {
+    $mergevar_settings = mailchimp_get_mergevars(array_filter($gr_lists));
     $mergevar_options = array();
     foreach ($mergevar_settings as $list_mergevars) {
       foreach ($list_mergevars as $mergevar) {
