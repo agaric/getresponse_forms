@@ -61,7 +61,7 @@ class GetresponseFormsPageForm extends FormBase {
       '#markup' => $this->signup->description,
     );
 
-    $form['mailchimp_lists'] = array('#tree' => TRUE);
+    $form['getresponse_lists'] = array('#tree' => TRUE);
 
     $lists = mailchimp_get_lists($this->signup->mc_lists);
 
@@ -77,12 +77,12 @@ class GetresponseFormsPageForm extends FormBase {
         // Wrap in a div:
         $wrapper_key = 'mailchimp_' . $list->id;
 
-        $form['mailchimp_lists'][$wrapper_key] = array(
+        $form['getresponse_lists'][$wrapper_key] = array(
           '#prefix' => '<div id="mailchimp-newsletter-' . $list->id . '" class="mailchimp-newsletter-wrapper">',
           '#suffix' => '</div>',
         );
 
-        $form['mailchimp_lists'][$wrapper_key]['subscribe'] = array(
+        $form['getresponse_lists'][$wrapper_key]['subscribe'] = array(
           '#type' => 'checkbox',
           '#title' => $list->name,
           '#return_value' => $list->id,
@@ -90,24 +90,24 @@ class GetresponseFormsPageForm extends FormBase {
         );
 
         if ($this->signup->settings['include_interest_groups'] && isset($list->intgroups)) {
-          $form['mailchimp_lists'][$wrapper_key]['interest_groups'] = array(
+          $form['getresponse_lists'][$wrapper_key]['interest_groups'] = array(
             '#type' => 'fieldset',
             '#title' => t('Interest Groups for %label', array('%label' => $list->name)),
             '#states' => array(
               'invisible' => array(
-                ':input[name="mailchimp_lists[' . $wrapper_key . '][subscribe]"]' => array('checked' => FALSE),
+                ':input[name="getresponse_lists[' . $wrapper_key . '][subscribe]"]' => array('checked' => FALSE),
               ),
             ),
           );
-          $form['mailchimp_lists'][$wrapper_key]['interest_groups'] += mailchimp_interest_groups_form_elements($list);
+          $form['getresponse_lists'][$wrapper_key]['interest_groups'] += mailchimp_interest_groups_form_elements($list);
         }
       }
     }
     else {
       $list = reset($lists);
       if ($this->signup->settings['include_interest_groups'] && isset($list->intgroups)) {
-        $form['mailchimp_lists']['#weight'] = 9;
-        $form['mailchimp_lists']['interest_groups'] = mailchimp_interest_groups_form_elements($list);
+        $form['getresponse_lists']['#weight'] = 9;
+        $form['getresponse_lists']['interest_groups'] = mailchimp_interest_groups_form_elements($list);
       }
     }
 
@@ -153,7 +153,7 @@ class GetresponseFormsPageForm extends FormBase {
     if (count($enabled_lists) > 1) {
 
       // Filter the selected lists out of the form values.
-      $selected_lists = array_filter($form_state->getValue('mailchimp_lists'),
+      $selected_lists = array_filter($form_state->getValue('getresponse_lists'),
         function($list) {
           return $list['subscribe'];
         }
@@ -164,7 +164,7 @@ class GetresponseFormsPageForm extends FormBase {
         return;
       }
 
-      $form_state->setErrorByName('mailchimp_lists', t("Please select at least one list to subscribe to."));
+      $form_state->setErrorByName('getresponse_lists', t("Please select at least one list to subscribe to."));
     }
   }
 
@@ -183,18 +183,18 @@ class GetresponseFormsPageForm extends FormBase {
 
     $email = $mergevars['EMAIL'];
 
-    $mailchimp_lists = $form_state->getValue('mailchimp_lists');
+    $getresponse_lists = $form_state->getValue('getresponse_lists');
 
     // If we only have one list we won't have checkbox values to investigate.
     if (count(array_filter($this->signup->mc_lists)) == 1) {
       $subscribe_lists[0] = array(
         'subscribe' => reset($this->signup->mc_lists),
-        'interest_groups' => isset($mailchimp_lists['interest_groups']) ? $mailchimp_lists['interest_groups'] : NULL,
+        'interest_groups' => isset($getresponse_lists['interest_groups']) ? $getresponse_lists['interest_groups'] : NULL,
       );
     }
     else {
       // We can look at the checkbox values now.
-      foreach ($mailchimp_lists as $list) {
+      foreach ($getresponse_lists as $list) {
         if ($list['subscribe']) {
           $subscribe_lists[] = $list;
         }
