@@ -131,7 +131,6 @@ function getresponse_forms_drupal_form_element($field) {
         $input['#type'] = 'textfield';
       };
       $input['#size'] = $field->options->size;
-      $input['#element_validate'] = array('mailchimp_validate_email');
       break;
 
     default:
