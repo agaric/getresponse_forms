@@ -102,6 +102,25 @@ function getresponse_forms_drupal_form_element($field) {
       $input['#options'] = $choices;
       break;
 
+    case 'checkbox':
+      // Checkbox is mapped to <input type='checkbox' /> i.e. 'checkbox' or
+      // 'checkboxes' element in Drupal Form API.
+      if (count($field->values) === 1) {
+        $input['#type'] = 'checkbox';
+        $input['#title'] = t(reset($field->values));
+      }
+      else {
+        $input['#type'] = 'checkboxes';
+        // Creates options, we must delete array keys to have relevant information
+        // on MailChimp.
+        $choices = array();
+        foreach ($field->values as $key => $choice) {
+          $choices[$key] = $choice;
+        }
+        $input['#options'] = $choices;
+      }
+      break;
+
     case 'email':
       if (\Drupal::service('element_info')->getInfo('emailfield', '#type')) {
         // Set to an HTML5 email type if 'emailfield' is supported:
