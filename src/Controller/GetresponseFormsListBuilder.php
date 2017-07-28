@@ -20,7 +20,7 @@ class GetresponseFormsListBuilder extends ConfigEntityListBuilder {
   public function buildHeader() {
     $header['label'] = $this->t('Label');
     $header['display_modes'] = $this->t('Display Modes');
-    $header['lists'] = $this->t('MailChimp Lists');
+    $header['lists'] = $this->t('GetResponse Lists');
 
     return $header + parent::buildHeader();
   }
@@ -47,7 +47,7 @@ class GetresponseFormsListBuilder extends ConfigEntityListBuilder {
     ];
 
     $modes = NULL;
-    $gr_lists = mailchimp_get_lists();
+    $gr_lists = getresponse_get_lists();
 
     switch ($entity->mode) {
       case GETRESPONSE_FORMS_BLOCK:
@@ -70,7 +70,7 @@ class GetresponseFormsListBuilder extends ConfigEntityListBuilder {
     $list_labels = array();
     foreach ($entity->gr_lists as $list_id) {
       if (!empty($list_id) && isset($gr_lists[$list_id])) {
-        $list_url = Url::fromUri('https://admin.mailchimp.com/lists/dashboard/overview?id=' . $gr_lists[$list_id]->id, array('attributes' => array('target' => '_blank')));
+        $list_url = Url::fromUri('http://example.com/lists/dashboard/overview?id=' . $gr_lists[$list_id]->id, array('attributes' => array('target' => '_blank')));
         $list_link = [
           '#title' => $this->t($gr_lists[$list_id]->name),
           '#type' => 'link',

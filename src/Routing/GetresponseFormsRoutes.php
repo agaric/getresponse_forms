@@ -5,7 +5,7 @@ namespace Drupal\getresponse_forms\Routing;
 use Symfony\Component\Routing\Route;
 
 /**
- * Defines dynamic routes for MailChimp signup forms rendered as pages.
+ * Defines dynamic routes for GetResponse forms rendered as pages.
  */
 class GetresponseFormsRoutes {
 

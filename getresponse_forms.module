@@ -53,10 +53,10 @@ function getresponse_forms_load_multiple($signup_ids = array(), $reset = FALSE) 
  * Convert GetResponse custom fields to Drupal Form API elements.
  *
  * @param array $field
- *   The mailchimp-formatted form element to convert.
+ *   The GetResponse field to convert to a form element.
  *
  * @return array
- *   A properly formatted drupal form element.
+ *   A properly formatted Drupal form element.
  */
 function getresponse_forms_drupal_form_element($field) {
   // Insert common FormAPI properties:
@@ -77,8 +77,6 @@ function getresponse_forms_drupal_form_element($field) {
       // Dropdown is mapped to <select> element in Drupal Form API.
       $input['#type'] = 'select';
 
-      // Creates options, we must delete array keys to have relevant information
-      // on MailChimp.
       $choices = array();
       foreach ($field->values as $key => $choice) {
         $choices[$key] = $choice;
@@ -92,8 +90,6 @@ function getresponse_forms_drupal_form_element($field) {
       // Drupal Form API.
       $input['#type'] = 'radios';
 
-      // Creates options, we must delete array keys to have relevant information
-      // on MailChimp.
       $choices = array();
       foreach ($field->values as $key => $choice) {
         $choices[$key] = $choice;
@@ -111,8 +107,6 @@ function getresponse_forms_drupal_form_element($field) {
       }
       else {
         $input['#type'] = 'checkboxes';
-        // Creates options, we must delete array keys to have relevant information
-        // on MailChimp.
         $choices = array();
         foreach ($field->values as $key => $choice) {
           $choices[$key] = $choice;

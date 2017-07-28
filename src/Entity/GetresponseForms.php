@@ -29,8 +29,8 @@ use Drupal\getresponse_forms\GetresponseFormsInterface;
  *     "uuid" = "uuid",
  *   },
  *   links = {
- *     "edit-form" = "/admin/config/services/mailchimp/signup/{getresponse_forms}",
- *     "delete-form" = "/admin/config/services/mailchimp/signup/{getresponse_forms}/delete"
+ *     "edit-form" = "/admin/config/services/getresponse/forms/{getresponse_forms}",
+ *     "delete-form" = "/admin/config/services/getresponse/forms/{getresponse_forms}/delete"
  *   }
  * )
  */
@@ -58,7 +58,7 @@ class GetresponseForms extends ConfigEntityBase implements GetresponseFormsInter
   public $title;
 
   /**
-   * The Signup Form Mailchimp Lists.
+   * The Signup Form GetResponse Lists.
    *
    * @var array
    */

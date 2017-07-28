@@ -11,7 +11,7 @@ use Drupal\getresponse_forms\Entity\GetresponseForms;
 class GetresponseFormsController extends ControllerBase {
 
   /**
-   * View a MailChimp signup form as a page.
+   * View a GetResponse signup form as a page.
    *
    * @param string $signup_id
    *   The ID of the GetresponseForms entity to view.
