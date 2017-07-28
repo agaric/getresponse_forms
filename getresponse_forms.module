@@ -73,7 +73,7 @@ function getresponse_forms_drupal_form_element($field) {
   }
 
   switch ($field->fieldType) {
-    case 'dropdown':
+    case 'single_select':
       // Dropdown is mapped to <select> element in Drupal Form API.
       $input['#type'] = 'select';
 
