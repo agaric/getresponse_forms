@@ -97,7 +97,7 @@ class GetresponseFormsPageForm extends FormBase {
 
     $mergevars_wrapper_id = isset($list->campaignId) ? $list->campaignId : '';
     $form['mergevars'] = array(
-      '#prefix' => '<div id="mailchimp-newsletter-' . $mergevars_wrapper_id . '-mergefields" class="mailchimp-newsletter-mergefields">',
+      '#prefix' => '<div id="getresponse-signup-' . $mergevars_wrapper_id . '-mergefields" class="getresponse-signup-mergefields">',
       '#suffix' => '</div>',
       '#tree' => TRUE,
     );
