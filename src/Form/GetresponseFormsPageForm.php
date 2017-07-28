@@ -25,7 +25,7 @@ class GetresponseFormsPageForm extends FormBase {
    *
    * @var GetresponseForms
    */
-  private $signup = nULL;
+  private $signup = NULL;
 
   /**
    * {@inheritdoc}
