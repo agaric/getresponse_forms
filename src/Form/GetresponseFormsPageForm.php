@@ -63,7 +63,7 @@ class GetresponseFormsPageForm extends FormBase {
 
     $form['getresponse_lists'] = array('#tree' => TRUE);
 
-    $lists = mailchimp_get_lists($this->signup->gr_lists);
+    $lists = getresponse_get_lists($this->signup->gr_lists);
 
     $lists_count = (!empty($lists)) ? count($lists) : 0;
 
@@ -75,17 +75,17 @@ class GetresponseFormsPageForm extends FormBase {
     if ($lists_count > 1) {
       foreach ($lists as $list) {
         // Wrap in a div:
-        $wrapper_key = 'mailchimp_' . $list->id;
+        $wrapper_key = 'getresponse_' . $list->campaignId;
 
         $form['getresponse_lists'][$wrapper_key] = array(
-          '#prefix' => '<div id="mailchimp-newsletter-' . $list->id . '" class="mailchimp-newsletter-wrapper">',
+          '#prefix' => '<div id="getresponse-lists-' . $list->campaignId . '" class="getresponse-lists-wrapper">',
           '#suffix' => '</div>',
         );
 
         $form['getresponse_lists'][$wrapper_key]['subscribe'] = array(
           '#type' => 'checkbox',
           '#title' => $list->name,
-          '#return_value' => $list->id,
+          '#return_value' => $list->campaignId,
           '#default_value' => 0,
         );
 
@@ -111,7 +111,7 @@ class GetresponseFormsPageForm extends FormBase {
       }
     }
 
-    $mergevars_wrapper_id = isset($list->id) ? $list->id : '';
+    $mergevars_wrapper_id = isset($list->campaignId) ? $list->campaignId : '';
     $form['mergevars'] = array(
       '#prefix' => '<div id="mailchimp-newsletter-' . $mergevars_wrapper_id . '-mergefields" class="mailchimp-newsletter-mergefields">',
       '#suffix' => '</div>',
@@ -174,11 +174,11 @@ class GetresponseFormsPageForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     global $base_url;
 
-    $list_details = mailchimp_get_lists($this->signup->gr_lists);
+    $list_details = getresponse_get_lists($this->signup->gr_lists);
 
     $subscribe_lists = array();
 
-    // Filter out blank fields so we don't erase values on the Mailchimp side.
+    // Filter out blank fields so we don't erase values on the GetResponse side.
     $mergevars = array_filter($form_state->getValue('mergevars'));
 
     $email = $mergevars['EMAIL'];
