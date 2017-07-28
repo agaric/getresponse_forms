@@ -8,7 +8,7 @@ use Drupal\Core\Url;
 use Drupal\getresponse_forms\Entity\GetresponseForms;
 
 /**
- * Subscribe to a MailChimp list.
+ * Subscribe to a GetResponse list.
  */
 class GetresponseFormsPageForm extends FormBase {
 
@@ -55,7 +55,7 @@ class GetresponseFormsPageForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = array();
 
-    $form['#attributes'] = array('class' => array('mailchimp-signup-subscribe-form'));
+    $form['#attributes'] = array('class' => array('getresponse-forms-subscribe-form'));
 
     $form['description'] = array(
       '#markup' => $this->signup->description,
