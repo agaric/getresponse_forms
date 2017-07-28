@@ -7,9 +7,9 @@
 
 use \Drupal\getresponse_forms\Entity\GetresponseForms;
 
-define('MAILCHIMP_SIGNUP_BLOCK', 1);
-define('MAILCHIMP_SIGNUP_PAGE', 2);
-define('MAILCHIMP_SIGNUP_BOTH', 3);
+define('GETRESPONSE_FORMS_BLOCK', 1);
+define('GETRESPONSE_FORMS_PAGE', 2);
+define('GETRESPONSE_FORMS_BOTH', 3);
 
 /**
  * Loads a single GetresponseForms entity by ID.

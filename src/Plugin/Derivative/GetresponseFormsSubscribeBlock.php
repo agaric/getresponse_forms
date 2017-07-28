@@ -19,7 +19,7 @@ class GetresponseFormsSubscribeBlock extends DeriverBase {
 
     /* @var $signup \Drupal\getresponse_forms\Entity\GetresponseForms */
     foreach ($signups as $signup) {
-      if (intval($signup->mode) == MAILCHIMP_SIGNUP_BLOCK || intval($signup->mode) == MAILCHIMP_SIGNUP_BOTH) {
+      if (intval($signup->mode) == GETRESPONSE_FORMS_BLOCK || intval($signup->mode) == GETRESPONSE_FORMS_BOTH) {
 
         $this->derivatives[$signup->id] = $base_plugin_definition;
         $this->derivatives[$signup->id]['admin_label'] = t('GetResponse Form: @name', array('@name' => $signup->label()));

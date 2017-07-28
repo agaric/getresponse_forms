@@ -73,17 +73,17 @@ class GetresponseFormsForm extends EntityForm {
       '#description' => t('This description will be shown on the signup form below the title. (500 characters or less)'),
     );
     $mode_defaults = array(
-      MAILCHIMP_SIGNUP_BLOCK => array(MAILCHIMP_SIGNUP_BLOCK),
-      MAILCHIMP_SIGNUP_PAGE => array(MAILCHIMP_SIGNUP_PAGE),
-      MAILCHIMP_SIGNUP_BOTH => array(MAILCHIMP_SIGNUP_BLOCK, MAILCHIMP_SIGNUP_PAGE),
+      GETRESPONSE_FORMS_BLOCK => array(GETRESPONSE_FORMS_BLOCK),
+      GETRESPONSE_FORMS_PAGE => array(GETRESPONSE_FORMS_PAGE),
+      GETRESPONSE_FORMS_BOTH => array(GETRESPONSE_FORMS_BLOCK, GETRESPONSE_FORMS_PAGE),
     );
     $form['mode'] = array(
       '#type' => 'checkboxes',
       '#title' => 'Display Mode',
       '#required' => TRUE,
       '#options' => array(
-        MAILCHIMP_SIGNUP_BLOCK => 'Block',
-        MAILCHIMP_SIGNUP_PAGE => 'Page',
+        GETRESPONSE_FORMS_BLOCK => 'Block',
+        GETRESPONSE_FORMS_PAGE => 'Page',
       ),
       '#default_value' => !empty($signup->mode) ? $mode_defaults[$signup->mode] : array(),
     );
@@ -103,10 +103,10 @@ class GetresponseFormsForm extends EntityForm {
       '#states' => array(
         // Hide unless needed.
         'visible' => array(
-          ':input[name="mode[' . MAILCHIMP_SIGNUP_PAGE . ']"]' => array('checked' => TRUE),
+          ':input[name="mode[' . GETRESPONSE_FORMS_PAGE . ']"]' => array('checked' => TRUE),
         ),
         'required' => array(
-          ':input[name="mode[' . MAILCHIMP_SIGNUP_PAGE . ']"]' => array('checked' => TRUE),
+          ':input[name="mode[' . GETRESPONSE_FORMS_PAGE . ']"]' => array('checked' => TRUE),
         ),
       ),
     );
@@ -267,7 +267,7 @@ class GetresponseFormsForm extends EntityForm {
     $signup->settings['safe_interest_groups'] = $form_state->getValue('safe_interest_groups');
 
     // Clear path value if mode doesn't include signup page.
-    if (!isset($mode[MAILCHIMP_SIGNUP_PAGE])) {
+    if (!isset($mode[GETRESPONSE_FORMS_PAGE])) {
       $signup->settings['path'] = '';
     }
 

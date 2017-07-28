@@ -50,13 +50,13 @@ class GetresponseFormsListBuilder extends ConfigEntityListBuilder {
     $mc_lists = mailchimp_get_lists();
 
     switch ($entity->mode) {
-      case MAILCHIMP_SIGNUP_BLOCK:
+      case GETRESPONSE_FORMS_BLOCK:
         $modes = $block_mode;
         break;
-      case MAILCHIMP_SIGNUP_PAGE:
+      case GETRESPONSE_FORMS_PAGE:
         $modes = $page_mode;
         break;
-      case MAILCHIMP_SIGNUP_BOTH:
+      case GETRESPONSE_FORMS_BOTH:
         $modes = array(
           'block_link' => $block_mode,
           'separator' => array(

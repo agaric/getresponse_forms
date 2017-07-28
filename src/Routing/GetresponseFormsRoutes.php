@@ -19,7 +19,7 @@ class GetresponseFormsRoutes {
 
     /* @var $signup \Drupal\getresponse_forms\Entity\GetresponseForms */
     foreach ($signups as $signup) {
-      if ((intval($signup->mode) == MAILCHIMP_SIGNUP_PAGE) || (intval($signup->mode) == MAILCHIMP_SIGNUP_BOTH)) {
+      if ((intval($signup->mode) == GETRESPONSE_FORMS_PAGE) || (intval($signup->mode) == GETRESPONSE_FORMS_BOTH)) {
         $routes['getresponse_forms.' . $signup->id] = new Route(
           // Route Path.
           '/' . $signup->settings['path'],
