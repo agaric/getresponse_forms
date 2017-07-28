@@ -134,20 +134,20 @@ class GetresponseFormsForm extends EntityForm {
 
     $form['gr_lists_config'] = array(
       '#type' => 'details',
-      '#title' => t('MailChimp List Selection & Configuration'),
+      '#title' => t('GetResponse List Selection & Configuration'),
       '#open' => TRUE,
     );
-    $lists = mailchimp_get_lists();
+    $lists = getresponse_get_lists();
     $options = array();
-    foreach ($lists as $mc_list) {
-      $options[$mc_list->id] = $mc_list->name;
+    foreach ($lists as $gr_list) {
+      $options[$gr_list->campaignId] = $gr_list->name;
     }
-    $mc_admin_url = Link::fromTextAndUrl('MailChimp', Url::fromUri('https://admin.mailchimp.com', array('attributes' => array('target' => '_blank'))));
+    $gr_admin_url = Link::fromTextAndUrl('GetResponse', Url::fromUri('https://app.getresponse.com', array('attributes' => array('target' => '_blank', 'rel' => 'noopener noreferrer'))));
     $form['gr_lists_config']['gr_lists'] = array(
       '#type' => 'checkboxes',
-      '#title' => t('MailChimp Lists'),
-      '#description' => t('Select which lists to show on your signup form. You can create additional lists at @MailChimp.',
-        array('@MailChimp' => $mc_admin_url->toString())),
+      '#title' => t('GetResponse Lists (Campaigns)'),
+      '#description' => t('Select which lists to show on your signup form. You can create additional lists at @GetResponse.',
+        array('@GetResponse' => $gr_admin_url->toString())),
       '#options' => $options,
       '#default_value' => is_array($signup->gr_lists) ? $signup->gr_lists : array(),
       '#required' => TRUE,
@@ -163,36 +163,11 @@ class GetresponseFormsForm extends EntityForm {
       ),
     );
 
-    $form['gr_lists_config']['mergefields'] = array(
-      '#prefix' => '<div id="mergefields-wrapper">',
+    $form['gr_lists_config']['custom_fields'] = array(
+      '#prefix' => '<div id="custom-fields-wrapper">',
       '#suffix' => '</div>',
     );
 
-    // Show merge fields if changing list field or editing existing list.
-    if ($form_state->getValue('gr_lists') || !$signup->isNew()) {
-      $form['gr_lists_config']['mergefields'] = array(
-        '#type' => 'fieldset',
-        '#title' => t('Merge Field Display'),
-        '#description' => t('Select the merge fields to show on registration forms. Required fields are automatically displayed.'),
-        '#id' => 'mergefields-wrapper',
-        '#tree' => TRUE,
-        '#weight' => 20,
-      );
-
-      $gr_lists = $form_state->getValue('gr_lists') ? $form_state->getValue('gr_lists') : $signup->gr_lists;
-
-      $mergevar_options = $this->getMergevarOptions($gr_lists);
-
-      foreach ($mergevar_options as $mergevar) {
-        $form['gr_lists_config']['mergefields'][$mergevar->tag] = array(
-          '#type' => 'checkbox',
-          '#title' => Html::escape($mergevar->name),
-          '#default_value' => isset($signup->settings['mergefields'][$mergevar->tag]) ? !empty($signup->settings['mergefields'][$mergevar->tag]) : TRUE,
-          '#required' => $mergevar->required,
-          '#disabled' => $mergevar->required,
-        );
-      }
-    }
 
     $form['subscription_settings'] = array(
       '#type' => 'details',
@@ -202,29 +177,9 @@ class GetresponseFormsForm extends EntityForm {
 
     $form['subscription_settings']['doublein'] = array(
       '#type' => 'checkbox',
-      '#title' => t('Require subscribers to Double Opt-in'),
+      '#title' => t('Require subscribers to Double Opt-in TODO see if GetResponse has this option'),
       '#description' => t('New subscribers will be sent a link with an email they must follow to confirm their subscription.'),
       '#default_value' => isset($signup->settings['doublein']) ? $signup->settings['doublein'] : FALSE,
-    );
-
-    $form['subscription_settings']['include_interest_groups'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Include interest groups on subscription form.'),
-      '#default_value' => isset($signup->settings['include_interest_groups']) ? $signup->settings['include_interest_groups'] : FALSE,
-      '#description' => t('If set, subscribers will be able to select applicable interest groups on the signup form.'),
-    );
-
-    $form['subscription_settings']['safe_interest_groups'] = array(
-      '#type' => 'checkbox',
-      '#title' => t("Don't opt-out of interest groups: only opt-in."),
-      '#default_value' => isset($signup->settings['safe_interest_groups']) ? $signup->settings['safe_interest_groups'] : FALSE,
-      '#description' => t('This is useful for "additive" form behavior, so a user adding a new interest will not have other interests removed from their Mailchimp subscription just because they failed to check the box again.'),
-      '#states' => array(
-        // Hide unless needed.
-        'visible' => array(
-          ':input[name="include_interest_groups"]' => array('checked' => TRUE),
-        ),
-      ),
     );
 
     return $form;
@@ -233,8 +188,8 @@ class GetresponseFormsForm extends EntityForm {
   /**
    * AJAX callback handler for GetresponseFormsForm.
    */
-  public function mergefields_callback(&$form, FormStateInterface $form_state) {
-    return $form['gr_lists_config']['mergefields'];
+  public function customfields_callback(&$form, FormStateInterface $form_state) {
+    return $form['gr_lists_config']['customfields'];
   }
 
   /**
@@ -247,11 +202,9 @@ class GetresponseFormsForm extends EntityForm {
     $signup = $this->getEntity();
     $signup->mode = array_sum($mode);
 
-    $mergefields = $form_state->getValue('mergefields');
+    $customfields = $form_state->getValue('customfields');
 
     $gr_lists = $form_state->getValue('gr_lists') ? $form_state->getValue('gr_lists') : $signup->gr_lists;
-
-    $mergevar_options = $this->getMergevarOptions($gr_lists);
 
     foreach ($mergefields as $id => $val) {
       if ($val) {
@@ -263,8 +216,6 @@ class GetresponseFormsForm extends EntityForm {
     $signup->settings['mergefields'] = $mergefields;
     $signup->settings['description'] = $form_state->getValue('description');
     $signup->settings['doublein'] = $form_state->getValue('doublein');
-    $signup->settings['include_interest_groups'] = $form_state->getValue('include_interest_groups');
-    $signup->settings['safe_interest_groups'] = $form_state->getValue('safe_interest_groups');
 
     // Clear path value if mode doesn't include signup page.
     if (!isset($mode[GETRESPONSE_FORMS_PAGE])) {
@@ -285,20 +236,6 @@ class GetresponseFormsForm extends EntityForm {
       ->condition('id', $id)
       ->execute();
     return (bool) $entity;
-  }
-
-  private function getMergevarOptions(array $gr_lists) {
-    $mergevar_settings = mailchimp_get_mergevars(array_filter($gr_lists));
-    $mergevar_options = array();
-    foreach ($mergevar_settings as $list_mergevars) {
-      foreach ($list_mergevars as $mergevar) {
-        if ($mergevar->public) {
-          $mergevar_options[$mergevar->tag] = $mergevar;
-        }
-      }
-    }
-
-    return $mergevar_options;
   }
 
 }
