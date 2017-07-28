@@ -3,18 +3,18 @@
 namespace Drupal\getresponse_forms\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\getresponse_forms\Entity\MailchimpSignup;
+use Drupal\getresponse_forms\Entity\GetresponseForms;
 
 /**
  * MailChimp Signup controller.
  */
-class MailchimpSignupController extends ControllerBase {
+class GetresponseFormsController extends ControllerBase {
 
   /**
    * View a MailChimp signup form as a page.
    *
    * @param string $signup_id
-   *   The ID of the MailchimpSignup entity to view.
+   *   The ID of the GetresponseForms entity to view.
    *
    * @return array
    *   Renderable array of page content.
@@ -24,7 +24,7 @@ class MailchimpSignupController extends ControllerBase {
 
     $signup = getresponse_forms_load($signup_id);
 
-    $form = new \Drupal\getresponse_forms\Form\MailchimpSignupPageForm();
+    $form = new \Drupal\getresponse_forms\Form\GetresponseFormsPageForm();
 
     $form_id = 'getresponse_forms_subscribe_page_' . $signup->id . '_form';
     $form->setFormID($form_id);

@@ -5,12 +5,12 @@ namespace Drupal\getresponse_forms\Form;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use Drupal\getresponse_forms\Entity\MailchimpSignup;
+use Drupal\getresponse_forms\Entity\GetresponseForms;
 
 /**
  * Subscribe to a MailChimp list.
  */
-class MailchimpSignupPageForm extends FormBase {
+class GetresponseFormsPageForm extends FormBase {
 
   /**
    * The ID for this form.
@@ -21,9 +21,9 @@ class MailchimpSignupPageForm extends FormBase {
   private $formId = 'getresponse_forms_page_form';
 
   /**
-   * The MailchimpSignup entity used to build this form.
+   * The GetresponseForms entity used to build this form.
    *
-   * @var MailchimpSignup
+   * @var GetresponseForms
    */
   private $signup = nULL;
 
@@ -38,7 +38,7 @@ class MailchimpSignupPageForm extends FormBase {
     $this->formId = $formId;
   }
 
-  public function setSignup(MailchimpSignup $signup) {
+  public function setSignup(GetresponseForms $signup) {
     $this->signup = $signup;
   }
 

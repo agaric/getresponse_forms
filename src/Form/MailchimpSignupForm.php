@@ -12,11 +12,11 @@ use Drupal\Core\Link;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Form controller for the MailchimpSignup entity edit form.
+ * Form controller for the GetresponseForms entity edit form.
  *
  * @ingroup getresponse_forms
  */
-class MailchimpSignupForm extends EntityForm {
+class GetresponseFormsForm extends EntityForm {
 
   /**
    * @param \Drupal\Core\Entity\Query\QueryFactory $entity_query
@@ -231,7 +231,7 @@ class MailchimpSignupForm extends EntityForm {
   }
 
   /**
-   * AJAX callback handler for MailchimpSignupForm.
+   * AJAX callback handler for GetresponseFormsForm.
    */
   public function mergefields_callback(&$form, FormStateInterface $form_state) {
     return $form['mc_lists_config']['mergefields'];
@@ -243,7 +243,7 @@ class MailchimpSignupForm extends EntityForm {
   public function save(array $form, FormStateInterface $form_state) {
     $mode = $form_state->getValue('mode');
 
-    /* @var $signup \Drupal\getresponse_forms\Entity\MailchimpSignup */
+    /* @var $signup \Drupal\getresponse_forms\Entity\GetresponseForms */
     $signup = $this->getEntity();
     $signup->mode = array_sum($mode);
 

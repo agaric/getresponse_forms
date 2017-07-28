@@ -33,4 +33,4 @@ entity.getresponse_forms.delete_form:
     _permission: 'administer getresponse_forms'
 
 route_callbacks:
-  - '\Drupal\getresponse_forms\Routing\MailchimpSignupRoutes::routes'
+  - '\Drupal\getresponse_forms\Routing\GetresponseFormsRoutes::routes'

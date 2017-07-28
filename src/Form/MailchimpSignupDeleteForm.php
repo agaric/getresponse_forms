@@ -7,11 +7,11 @@ use Drupal\Core\Url;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Form controller for the MailchimpSignup entity delete form.
+ * Form controller for the GetresponseForms entity delete form.
  *
  * @ingroup getresponse_forms
  */
-class MailchimpSignupDeleteForm extends EntityConfirmFormBase {
+class GetresponseFormsDeleteForm extends EntityConfirmFormBase {
 
   /**
    * {@inheritdoc}

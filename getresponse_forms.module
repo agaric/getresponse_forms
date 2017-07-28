@@ -5,35 +5,35 @@
  * Creates signup forms integrated with MailChimp.
  */
 
-use \Drupal\getresponse_forms\Entity\MailchimpSignup;
+use \Drupal\getresponse_forms\Entity\GetresponseForms;
 
 define('MAILCHIMP_SIGNUP_BLOCK', 1);
 define('MAILCHIMP_SIGNUP_PAGE', 2);
 define('MAILCHIMP_SIGNUP_BOTH', 3);
 
 /**
- * Loads a single MailchimpSignup entity by ID.
+ * Loads a single GetresponseForms entity by ID.
  *
  * @param int $signup_id
- *   The ID of the MailchimpSignup entity to load.
+ *   The ID of the GetresponseForms entity to load.
  *
- * @return \Drupal\getresponse_forms\Entity\MailchimpSignup
- *   The MailchimpSignup entity.
+ * @return \Drupal\getresponse_forms\Entity\GetresponseForms
+ *   The GetresponseForms entity.
  */
 function getresponse_forms_load($signup_id) {
-  return MailchimpSignup::load($signup_id);
+  return GetresponseForms::load($signup_id);
 }
 
 /**
- * Loads multiple MailchimpSignup entities.
+ * Loads multiple GetresponseForms entities.
  *
  * @param array $signup_ids
- *   Array of MailchimpSignup entity IDs to load.
+ *   Array of GetresponseForms entity IDs to load.
  * @param bool $reset
- *   TRUE to reset cache when loading MailchimpSignup entities.
+ *   TRUE to reset cache when loading GetresponseForms entities.
  *
- * @return \Drupal\getresponse_forms\Entity\MailchimpSignup[]
- *   Array of MailchimpSignup entities.
+ * @return \Drupal\getresponse_forms\Entity\GetresponseForms[]
+ *   Array of GetresponseForms entities.
  */
 function getresponse_forms_load_multiple($signup_ids = array(), $reset = FALSE) {
   if (empty($signup_ids)) {

@@ -7,7 +7,7 @@ use Symfony\Component\Routing\Route;
 /**
  * Defines dynamic routes for MailChimp signup forms rendered as pages.
  */
-class MailchimpSignupRoutes {
+class GetresponseFormsRoutes {
 
   /**
    * {@inheritdoc}
@@ -17,7 +17,7 @@ class MailchimpSignupRoutes {
 
     $signups = getresponse_forms_load_multiple();
 
-    /* @var $signup \Drupal\getresponse_forms\Entity\MailchimpSignup */
+    /* @var $signup \Drupal\getresponse_forms\Entity\GetresponseForms */
     foreach ($signups as $signup) {
       if ((intval($signup->mode) == MAILCHIMP_SIGNUP_PAGE) || (intval($signup->mode) == MAILCHIMP_SIGNUP_BOTH)) {
         $routes['getresponse_forms.' . $signup->id] = new Route(
@@ -25,7 +25,7 @@ class MailchimpSignupRoutes {
           '/' . $signup->settings['path'],
           // Route defaults.
           array(
-            '_controller' => '\Drupal\getresponse_forms\Controller\MailchimpSignupController::page',
+            '_controller' => '\Drupal\getresponse_forms\Controller\GetresponseFormsController::page',
             '_title' => $signup->title,
             'signup_id' => $signup->id,
           ),

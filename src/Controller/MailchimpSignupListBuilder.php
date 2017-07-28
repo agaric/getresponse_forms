@@ -8,11 +8,11 @@ use Drupal\Core\Url;
 use Drupal\Core\Link;
 
 /**
- * Provides a listing of MailchimpSignups.
+ * Provides a listing of GetresponseFormss.
  *
  * @ingroup getresponse_forms
  */
-class MailchimpSignupListBuilder extends ConfigEntityListBuilder {
+class GetresponseFormsListBuilder extends ConfigEntityListBuilder {
 
   /**
    * {@inheritdoc}

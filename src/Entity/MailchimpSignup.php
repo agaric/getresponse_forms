@@ -3,10 +3,10 @@
 namespace Drupal\getresponse_forms\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
-use Drupal\getresponse_forms\MailchimpSignupInterface;
+use Drupal\getresponse_forms\GetresponseFormsInterface;
 
 /**
- * Defines the MailchimpSignup entity.
+ * Defines the GetresponseForms entity.
  *
  * @ingroup getresponse_forms
  *
@@ -15,11 +15,11 @@ use Drupal\getresponse_forms\MailchimpSignupInterface;
  *   label = @Translation("Mailchimp Signup Form"),
  *   fieldable = FALSE,
  *   handlers = {
- *     "list_builder" = "Drupal\getresponse_forms\Controller\MailchimpSignupListBuilder",
+ *     "list_builder" = "Drupal\getresponse_forms\Controller\GetresponseFormsListBuilder",
  *     "form" = {
- *       "add" = "Drupal\getresponse_forms\Form\MailchimpSignupForm",
- *       "edit" = "Drupal\getresponse_forms\Form\MailchimpSignupForm",
- *       "delete" = "Drupal\getresponse_forms\Form\MailchimpSignupDeleteForm"
+ *       "add" = "Drupal\getresponse_forms\Form\GetresponseFormsForm",
+ *       "edit" = "Drupal\getresponse_forms\Form\GetresponseFormsForm",
+ *       "delete" = "Drupal\getresponse_forms\Form\GetresponseFormsDeleteForm"
  *     }
  *   },
  *   config_prefix = "getresponse_forms",
@@ -34,7 +34,7 @@ use Drupal\getresponse_forms\MailchimpSignupInterface;
  *   }
  * )
  */
-class MailchimpSignup extends ConfigEntityBase implements MailchimpSignupInterface {
+class GetresponseForms extends ConfigEntityBase implements GetresponseFormsInterface {
 
   /**
    * The Signup ID.
