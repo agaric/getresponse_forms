@@ -80,8 +80,8 @@ function getresponse_forms_drupal_form_element($field) {
       // Creates options, we must delete array keys to have relevant information
       // on MailChimp.
       $choices = array();
-      foreach ($field->options->choices as $choice) {
-        $choices[$choice] = $choice;
+      foreach ($field->values as $key => $choice) {
+        $choices[$key] = $choice;
       }
 
       $input['#options'] = $choices;
@@ -95,8 +95,8 @@ function getresponse_forms_drupal_form_element($field) {
       // Creates options, we must delete array keys to have relevant information
       // on MailChimp.
       $choices = array();
-      foreach ($field->options->choices as $choice) {
-        $choices[$choice] = $choice;
+      foreach ($field->values as $key => $choice) {
+        $choices[$key] = $choice;
       }
 
       $input['#options'] = $choices;
