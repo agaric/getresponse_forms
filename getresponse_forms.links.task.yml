@@ -1,5 +1,5 @@
 getresponse_forms.admin:
   route_name: getresponse_forms.admin
-  base_route: mailchimp.admin
-  title: 'Signup Forms'
+  base_route: getresponse.admin
+  title: 'Custom GetResponse forms'
   weight: 10
