@@ -194,7 +194,7 @@ class GetresponseFormsPageForm extends FormBase {
       // $result = mailchimp_subscribe($list_id, $email, $mergevars, $this->signup->settings['doublein']);
       $api_key = \Drupal::config('getresponse.settings')->get('api_key');
       $api     = new Api($api_key);
-      $result  = Api->addContact($fields);
+      $result  = $api->addContact($fields);
 
       if (empty($result)) {
         drupal_set_message(t('There was a problem with your newsletter signup to %list.', array(
