@@ -1,34 +1,33 @@
 
 getresponse_forms.admin:
-  path: '/admin/config/services/mailchimp/signup'
+  path: '/admin/config/services/getresponse/forms'
   defaults:
     _entity_list: 'getresponse_forms'
-    _title: 'Signup Forms'
+    _title: 'Custom Forms'
   requirements:
     _permission: 'administer getresponse_forms'
-    _mailchimp_configuration_access_check: 'TRUE'
 
 getresponse_forms.add:
-  path: '/admin/config/services/mailchimp/signup/add'
+  path: '/admin/config/services/getresponse/forms/add'
   defaults:
     _entity_form: 'getresponse_forms.add'
-    _title: 'Add Signup Form'
+    _title: 'Add Custom Form'
   requirements:
     _permission: 'administer getresponse_forms'
 
 entity.getresponse_forms.edit_form:
-  path: '/admin/config/services/mailchimp/signup/{getresponse_forms}'
+  path: '/admin/config/services/getresponse/forms/{getresponse_forms}'
   defaults:
     _entity_form: 'getresponse_forms.edit'
-    _title: 'Edit Signup Form'
+    _title: 'Edit Custom Form'
   requirements:
     _permission: 'administer getresponse_forms'
 
 entity.getresponse_forms.delete_form:
-  path: '/admin/config/services/mailchimp/signup/{getresponse_forms}/delete'
+  path: '/admin/config/services/getresponse/forms/{getresponse_forms}/delete'
   defaults:
     _entity_form: 'getresponse_forms.delete'
-    _title: 'Delete Signup Form'
+    _title: 'Delete Custom Form'
   requirements:
     _permission: 'administer getresponse_forms'
 
