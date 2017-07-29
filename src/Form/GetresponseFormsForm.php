@@ -151,16 +151,6 @@ class GetresponseFormsForm extends EntityForm {
       '#options' => $options,
       '#default_value' => is_array($signup->gr_lists) ? $signup->gr_lists : array(),
       '#required' => TRUE,
-      '#ajax' => array(
-        'callback' => '::mergefields_callback',
-        'wrapper' => 'mergefields-wrapper',
-        'method' => 'replace',
-        'effect' => 'fade',
-        'progress' => array(
-          'type' => 'throbber',
-          'message' => t('Retrieving merge fields for this list.'),
-        ),
-      ),
     );
 
     $form['gr_lists_config']['custom_fields'] = array(
