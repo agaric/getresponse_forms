@@ -3,7 +3,7 @@ type: module
 description: Build GetResponse custom forms exposed as blocks.
 package: GetResponse
 core: 8.x
-configure: getresponse.admin.forms
+configure: getresponse_forms.admin
 
 dependencies:
 - getresponse
