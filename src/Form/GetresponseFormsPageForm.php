@@ -6,6 +6,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\getresponse_forms\Entity\GetresponseForms;
+use Drupal\getresponse\Service\Api;
 
 /**
  * Subscribe to a GetResponse list.
@@ -95,9 +96,9 @@ class GetresponseFormsPageForm extends FormBase {
       $list = reset($lists);
     }
 
-    $mergevars_wrapper_id = isset($list->campaignId) ? $list->campaignId : '';
-    $form['mergevars'] = array(
-      '#prefix' => '<div id="getresponse-signup-' . $mergevars_wrapper_id . '-mergefields" class="getresponse-signup-mergefields">',
+    $fields_wrapper_id = isset($list->campaignId) ? $list->campaignId : '';
+    $form['custom_fields'] = array(
+      '#prefix' => '<div id="getresponse-signup-' . $fields_wrapper_id . '-mergefields" class="getresponse-signup-mergefields">',
       '#suffix' => '</div>',
       '#tree' => TRUE,
     );
@@ -105,9 +106,9 @@ class GetresponseFormsPageForm extends FormBase {
     foreach ($this->signup->settings['mergefields'] as $tag => $mergevar_str) {
       if (!empty($mergevar_str)) {
         $mergevar = unserialize($mergevar_str);
-        $form['mergevars'][$tag] = getresponse_forms_drupal_form_element($mergevar);
+        $form['custom_fields'][$tag] = getresponse_forms_drupal_form_element($mergevar);
         if (empty($lists)) {
-          $form['mergevars'][$tag]['#disabled'] = TRUE;
+          $form['custom_fields'][$tag]['#disabled'] = TRUE;
         }
       }
     }
@@ -163,9 +164,9 @@ class GetresponseFormsPageForm extends FormBase {
     $subscribe_lists = array();
 
     // Filter out blank fields so we don't erase values on the GetResponse side.
-    $mergevars = array_filter($form_state->getValue('mergevars'));
+    $custom_fields = array_filter($form_state->getValue('custom_fields'));
 
-    $email = $mergevars['EMAIL'];
+    $email = $custom_fields['EMAIL'];
 
     $getresponse_lists = $form_state->getValue('getresponse_lists');
 
@@ -190,7 +191,10 @@ class GetresponseFormsPageForm extends FormBase {
     foreach ($subscribe_lists as $list_choices) {
       $list_id = $list_choices['subscribe'];
 
-      $result = mailchimp_subscribe($list_id, $email, $mergevars, $this->signup->settings['doublein']);
+      // $result = mailchimp_subscribe($list_id, $email, $mergevars, $this->signup->settings['doublein']);
+      $api_key = \Drupal::config('getresponse.settings')->get('api_key');
+      $api     = new Api($api_key);
+      $result  = Api->addContact($fields);
 
       if (empty($result)) {
         drupal_set_message(t('There was a problem with your newsletter signup to %list.', array(
