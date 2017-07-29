@@ -70,7 +70,7 @@ class GetresponseFormsListBuilder extends ConfigEntityListBuilder {
     $list_labels = array();
     foreach ($entity->gr_lists as $list_id) {
       if (!empty($list_id) && isset($gr_lists[$list_id])) {
-        $list_url = Url::fromUri('http://example.com/lists/dashboard/overview?id=' . $gr_lists[$list_id]->id, array('attributes' => array('target' => '_blank')));
+        $list_url = Url::fromUri('https://app.getresponse.com/lists?id=' . $gr_lists[$list_id]->campaignId, array('attributes' => array('target' => '_blank', 'rel' => 'noopener noreferrer')));
         $list_link = [
           '#title' => $this->t($gr_lists[$list_id]->name),
           '#type' => 'link',
