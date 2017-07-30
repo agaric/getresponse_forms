@@ -153,10 +153,138 @@ class GetresponseFormsForm extends EntityForm {
       '#required' => TRUE,
     );
 
-    $form['gr_lists_config']['custom_fields'] = array(
-      '#prefix' => '<div id="custom-fields-wrapper">',
+    $custom_fields = getresponse_get_custom_fields();
+
+    // Build the list of existing custom fields for this form.
+    $form['custom_fields'] = [
+      '#type' => 'table',
+      '#header' => [
+        $this->t('Field'),
+        $this->t('Weight'),
+        $this->t('Operations'),
+      ],
+      '#tabledrag' => [
+        [
+          'action' => 'order',
+          'relationship' => 'sibling',
+          'group' => 'getresponse-custom-field-order-weight',
+        ],
+      ],
+      '#attributes' => [
+        'id' => 'getresponse-custom_fields',
+      ],
+      '#empty' => t('There are currently no custom_fields in this style. Add one by selecting an option below.'),
+      // Render custom_fields below parent elements.
+      '#weight' => 5,
+    ];
+    // $this->entity->getFields() as $field
+    foreach ($this->custom_fields as $key) {
+      if (!$key)  continue;
+      // $key = $field->getUuid();
+      $field = $custom_fields[$key];
+      $form['custom_fields'][$key]['#attributes']['class'][] = 'draggable';
+      $form['custom_fields'][$key]['#weight'] = isset($user_input['custom_fields']) ? $user_input['custom_fields'][$key]['weight'] : NULL;
+      $form['custom_fields'][$key]['field'] = [
+        '#tree' => FALSE,
+        'data' => [
+          'label' => [
+            '#plain_text' => $field->name,
+          ],
+        ],
+      ];
+
+   /**
+    * Still no need for summaries and such yet
+      $summary = $field->getSummary();
+
+      if (!empty($summary)) {
+        $summary['#prefix'] = ' ';
+        $form['custom_fields'][$key]['field']['data']['summary'] = $summary;
+      }
+    */
+
+      $form['custom_fields'][$key]['weight'] = [
+        '#type' => 'weight',
+        '#title' => $this->t('Weight for @title', ['@title' => $field->name]),
+        '#title_display' => 'invisible',
+        '#default_value' => $field->getWeight(),
+        '#attributes' => [
+          'class' => ['getresponse-custom-field-order-weight'],
+        ],
+      ];
+
+      $links = [];
+/**
+  * NOTE:  We don't currently have a need for configurable fields so keep this in our back pocket.
+      $is_configurable = $field instanceof ConfigurableImageEffectInterface;
+      if ($is_configurable) {
+        $links['edit'] = [
+          'title' => $this->t('Edit'),
+          'url' => Url::fromRoute('getresponse.field_edit_form', [
+            'image_style' => $this->entity->id(),
+            'image_field' => $key,
+          ]),
+        ];
+      }
+  */
+      /*
+      $links['delete'] = [
+        'title' => $this->t('Delete'),
+        'url' => Url::fromRoute('getresponse.field_delete', [
+          'getresponse_form' => $this->entity->id(),
+          'custom_field' => $key,
+        ]),
+      ];
+       */
+      $form['custom_fields'][$key]['operations'] = [
+        '#type' => 'operations',
+        '#links' => $links,
+      ];
+    }
+
+    // Build the new image field addition form and add it to the field list.
+    $new_field_options = [];
+    foreach ($custom_fields as $key => $field) {
+      $new_field_options[$key] = $field->name;
+    }
+    $form['custom_fields']['new'] = [
+      '#tree' => FALSE,
+      '#weight' => isset($user_input['weight']) ? $user_input['weight'] : NULL,
+      '#attributes' => ['class' => ['draggable']],
+    ];
+    $form['custom_fields']['new']['field'] = [
+      'data' => [
+        'new' => [
+          '#type' => 'select',
+          '#title' => $this->t('field'),
+          '#title_display' => 'invisible',
+          '#options' => $new_field_options,
+          '#empty_option' => $this->t('Select a new field'),
+        ],
+        [
+          'add' => [
+            '#type' => 'submit',
+            '#value' => $this->t('Add'),
+            '#validate' => ['::effectValidate'],
+            '#submit' => ['::submitForm', '::effectSave'],
+          ],
+        ],
+      ],
+      '#prefix' => '<div class="image-style-new">',
       '#suffix' => '</div>',
-    );
+    ];
+
+    $form['custom_fields']['new']['weight'] = [
+      '#type' => 'weight',
+      '#title' => $this->t('Weight for new field'),
+      '#title_display' => 'invisible',
+      '#default_value' => count($this->custom_fields) + 1,
+      '#attributes' => ['class' => ['getresponse-custom-field-order-weight']],
+    ];
+    $form['custom_fields']['new']['operations'] = [
+      'data' => [],
+    ];
+
 
 
     $form['subscription_settings'] = array(

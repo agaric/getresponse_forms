@@ -65,6 +65,21 @@ class GetresponseForms extends ConfigEntityBase implements GetresponseFormsInter
   public $gr_lists;
 
   /**
+   * The array of custom fields for this form.
+   *
+   * @var array
+   */
+  public $custom_fields = [];
+  // protected
+
+  /**
+   * Holds the collection of image effects that are used by this image style.
+   *
+   * @var \Drupal\image\ImageEffectPluginCollection
+  protected $effectsCollection;
+   */
+
+  /**
    * The Signup Form Mode (Block, Page, or Both).
    *
    * @var int
