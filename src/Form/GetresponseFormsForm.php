@@ -227,7 +227,6 @@ class GetresponseFormsForm extends EntityForm {
         ];
       }
   */
-      /*
       $links['delete'] = [
         'title' => $this->t('Delete'),
         'url' => Url::fromRoute('getresponse.field_delete', [
@@ -235,7 +234,6 @@ class GetresponseFormsForm extends EntityForm {
           'custom_field' => $key,
         ]),
       ];
-       */
       $form['custom_fields'][$key]['operations'] = [
         '#type' => 'operations',
         '#links' => $links,
