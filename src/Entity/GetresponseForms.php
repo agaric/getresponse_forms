@@ -34,7 +34,7 @@ use Drupal\getresponse_forms\GetresponseFormsInterface;
  *   }
  * )
  */
-class GetresponseForms extends ConfigEntityBase implements GetresponseFormsInterface {
+class GetresponseForms extends ConfigEntityBase implements GetresponseFormsInterface, EntityWithPluginCollectionInterface {
 
   /**
    * The Signup ID.
@@ -69,15 +69,14 @@ class GetresponseForms extends ConfigEntityBase implements GetresponseFormsInter
    *
    * @var array
    */
-  public $custom_fields = [];
-  // protected
+  protected $custom_fields = [];
 
   /**
    * Holds the collection of image effects that are used by this image style.
    *
-   * @var \Drupal\image\ImageEffectPluginCollection
-  protected $effectsCollection;
+   * @var \Drupal\getresponse_forms\FieldPluginCollection
    */
+  protected $fieldCollection;
 
   /**
    * The Signup Form Mode (Block, Page, or Both).
@@ -103,8 +102,15 @@ class GetresponseForms extends ConfigEntityBase implements GetresponseFormsInter
   /**
    * {@inheritdoc}
    */
+  public function id() {
+    return $this->id;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function label() {
-    return $this->title;
+    return $this->name;
   }
 
 }
