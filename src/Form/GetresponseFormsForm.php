@@ -265,12 +265,12 @@ class GetresponseFormsForm extends EntityForm {
           'add' => [
             '#type' => 'submit',
             '#value' => $this->t('Add'),
-            '#validate' => ['::effectValidate'],
-            '#submit' => ['::submitForm', '::effectSave'],
+            '#validate' => ['::fieldValidate'],
+            '#submit' => ['::submitForm', '::fieldSave'],
           ],
         ],
       ],
-      '#prefix' => '<div class="image-style-new">',
+      '#prefix' => '<div class="custom-field-new">',
       '#suffix' => '</div>',
     ];
 
@@ -304,11 +304,62 @@ class GetresponseFormsForm extends EntityForm {
   }
 
   /**
-   * AJAX callback handler for GetresponseFormsForm.
+   * Validate handler for custom field.
    */
-  public function customfields_callback(&$form, FormStateInterface $form_state) {
-    return $form['gr_lists_config']['customfields'];
+  public function fieldValidate($form, FormStateInterface $form_state) {
+    if (!$form_state->getValue('new')) {
+      $form_state->setErrorByName('new', $this->t('Select a custom field to add.'));
+    }
   }
+
+  /**
+   * Submit handler for custom field.
+   */
+  public function fieldSave($form, FormStateInterface $form_state) {
+    $this->save($form, $form_state);
+
+    // Check if this field has any configuration options.
+    $effect = $this->imageEffectManager->getDefinition($form_state->getValue('new'));
+
+    // Load the configuration form for this option.
+    if (is_subclass_of($effect['class'], '\Drupal\image\ConfigurableImageEffectInterface')) {
+      $form_state->setRedirect(
+        'image.effect_add_form',
+        [
+          'image_style' => $this->entity->id(),
+          'image_effect' => $form_state->getValue('new'),
+        ],
+        ['query' => ['weight' => $form_state->getValue('weight')]]
+      );
+    }
+    // If there's no form, immediately add the image effect.
+    else {
+      $effect = [
+        'id' => $effect['id'],
+        'data' => [],
+        'weight' => $form_state->getValue('weight'),
+      ];
+      $effect_id = $this->entity->addImageEffect($effect);
+      $this->entity->save();
+      if (!empty($effect_id)) {
+        drupal_set_message($this->t('The image effect was successfully applied.'));
+      }
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+
+    // Update image effect weights.
+    if (!$form_state->isValueEmpty('effects')) {
+      $this->updateEffectWeights($form_state->getValue('effects'));
+    }
+
+    parent::submitForm($form, $form_state);
+  }
+
 
   /**
    * {@inheritdoc}
