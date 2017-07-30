@@ -16,7 +16,7 @@ getresponse_forms.add:
     _permission: 'administer getresponse_forms'
 
 entity.getresponse_forms.edit_form:
-  path: '/admin/config/services/getresponse/forms/{getresponse_form}'
+  path: '/admin/config/services/getresponse/forms/{getresponse_forms}'
   defaults:
     _entity_form: 'getresponse_forms.edit'
     _title: 'Edit Custom Form'
@@ -24,7 +24,7 @@ entity.getresponse_forms.edit_form:
     _permission: 'administer getresponse_forms'
 
 entity.getresponse_forms.delete_form:
-  path: '/admin/config/services/getresponse/forms/{getresponse_form}/delete'
+  path: '/admin/config/services/getresponse/forms/{getresponse_forms}/delete'
   defaults:
     _entity_form: 'getresponse_forms.delete'
     _title: 'Delete Custom Form'
@@ -32,7 +32,7 @@ entity.getresponse_forms.delete_form:
     _permission: 'administer getresponse_forms'
 
 getresponse.field_delete:
-  path: '/admin/config/services/getresponse/forms/{getresponse_form}/fields/{field}/delete'
+  path: '/admin/config/services/getresponse/forms/{getresponse_forms}/fields/{field}/delete'
   defaults:
     _form: '\Drupal\getresponse_forms\Form\FieldDeleteForm'
     _title: 'Remove custom field'

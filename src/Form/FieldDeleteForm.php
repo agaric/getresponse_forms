@@ -16,7 +16,7 @@ class FieldDeleteForm extends ConfirmFormBase {
    *
    * @var \Drupal\getresponse_forms\GetresponseFormsInterface
    */
-  protected $form;
+  protected $getresponseForm;
 
   /**
    * The GetResponse custom field to be deleted.
@@ -29,7 +29,7 @@ class FieldDeleteForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getQuestion() {
-    return $this->t('Are you sure you want to remove the @field field from the %form form?', ['%form' => $this->form->label(), '@field' => $this->field->label()]);
+    return $this->t('Are you sure you want to remove the @field field from the %form form?', ['%form' => $this->getresponseForm->label(), '@field' => $this->field->label()]);
   }
 
   /**
@@ -56,9 +56,9 @@ class FieldDeleteForm extends ConfirmFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, GetresponseFormsInterface $form = NULL, $field = NULL) {
-    $this->form = $form;
-    $this->field = $this->form->getField($field);
+  public function buildForm(array $form, FormStateInterface $form_state, GetresponseFormsInterface $getresponse_form = NULL, $field = NULL) {
+    $this->getresponseForm = $getresponse_form;
+    $this->field = $this->getresponseForm->getField($field);
 
     return parent::buildForm($form, $form_state);
   }

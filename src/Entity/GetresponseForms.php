@@ -3,10 +3,12 @@
 namespace Drupal\getresponse_forms\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
+use Drupal\Core\Entity\EntityWithPluginCollectionInterface;
 use Drupal\getresponse_forms\GetresponseFormsInterface;
+use Drupal\getresponse_forms\FieldInterface;
 
 /**
- * Defines the GetresponseForms entity.
+ * Defines the GetresponseForms (take this to mean a GetResponse Forms form) entity.
  *
  * @ingroup getresponse_forms
  *
@@ -26,21 +28,24 @@ use Drupal\getresponse_forms\GetresponseFormsInterface;
  *   admin_permission = "administer getresponse_forms",
  *   entity_keys = {
  *     "id" = "id",
- *     "uuid" = "uuid",
+ *     "label" = "title"
  *   },
  *   links = {
+ *     "collection" = "/admin/config/services/getresponse/forms",
  *     "edit-form" = "/admin/config/services/getresponse/forms/{getresponse_forms}",
  *     "delete-form" = "/admin/config/services/getresponse/forms/{getresponse_forms}/delete"
+ *   },
+ *   config_export = {
+ *     "id",
+ *     "title",
+ *     "gr_lists",
+ *     "fields"
  *   }
  * )
  */
 class GetresponseForms extends ConfigEntityBase implements GetresponseFormsInterface, EntityWithPluginCollectionInterface {
 
-  /**
-   * The Signup ID.
-   *
-   * @var int
-   */
+  // DEPRECATED?
   public $id;
 
   /**
@@ -51,7 +56,7 @@ class GetresponseForms extends ConfigEntityBase implements GetresponseFormsInter
   public $name;
 
   /**
-   * The Signup Form Title.
+   * The Signup Form Title (label).
    *
    * @var string
    */
@@ -69,7 +74,7 @@ class GetresponseForms extends ConfigEntityBase implements GetresponseFormsInter
    *
    * @var array
    */
-  protected $custom_fields = [];
+  protected $fields = [];
 
   /**
    * Holds the collection of image effects that are used by this image style.
@@ -103,14 +108,75 @@ class GetresponseForms extends ConfigEntityBase implements GetresponseFormsInter
    * {@inheritdoc}
    */
   public function id() {
-    return $this->id;
+    return $this->id; // $this->name;
   }
 
   /**
    * {@inheritdoc}
    */
   public function label() {
-    return $this->name;
+    return $this->title;
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function deleteField(FieldInterface $field) {
+    $this->getFields()->removeInstanceId($field->getUuid());
+    $this->save();
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getField($field_id) {
+    return $this->getFields()->get($field_id);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFields() {
+    if (!$this->fieldsCollection) {
+      $this->fieldsCollection = new FieldPluginCollection($this->getFieldPluginManager(), $this->effects);
+      $this->effectsCollection->sort();
+    }
+    return $this->effectsCollection;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPluginCollections() {
+    return ['effects' => $this->getEffects()];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function addImageEffect(array $configuration) {
+    $configuration['uuid'] = $this->uuidGenerator()->generate();
+    $this->getEffects()->addInstanceId($configuration['uuid'], $configuration);
+    return $configuration['uuid'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getName() {
+    return $this->get('name');
+  }
+
+  /**
+   * Returns the image effect plugin manager.
+   *
+   * @return \Drupal\Component\Plugin\PluginManagerInterface
+   *   The image effect plugin manager.
+   */
+  protected function getFieldPluginManager() {
+    return \Drupal::service('plugin.manager.getresponse_forms.field');
+  }
+
 
 }
