@@ -72,33 +72,31 @@ class GetresponseFormsPageForm extends FormBase {
       drupal_set_message($this->t('The subscription service is currently unavailable. Please try again later.'), 'warning');
     }
 
-    $list = array();
     if ($lists_count > 1) {
+      $options = [];
       foreach ($lists as $list) {
-        // Wrap in a div:
-        $wrapper_key = 'getresponse_' . $list->campaignId;
+        $options[$list->campaignId] = $list->name;
 
-        $form['getresponse_lists'][$wrapper_key] = array(
-          '#prefix' => '<div id="getresponse-lists-' . $list->campaignId . '" class="getresponse-lists-wrapper">',
-          '#suffix' => '</div>',
-        );
-
-        $form['getresponse_lists'][$wrapper_key]['subscribe'] = array(
-          '#type' => 'checkbox',
-          '#title' => $list->name,
-          '#return_value' => $list->campaignId,
-          '#default_value' => 0,
-        );
+        $form['getresponse_lists'] = [
+          '#type' => 'checkboxes',
+          '#options' => $options,
+          '#required' => TRUE,
+        ];
 
       }
     }
     else {
       $list = reset($lists);
+      $form['getresponse_lists'] = array(
+        '#type' => 'hidden',
+        '#title' => $list->name,
+        '#value' => $list->campaignId,
+      );
+
     }
 
-    $fields_wrapper_id = isset($list->campaignId) ? $list->campaignId : '';
     $form['custom_fields'] = array(
-      '#prefix' => '<div id="getresponse-signup-' . $fields_wrapper_id . '-mergefields" class="getresponse-signup-mergefields">',
+      '#prefix' => '<div id="getresponse-forms-' . $this->signup->name . '-fields" class="getresponse-fields">',
       '#suffix' => '</div>',
       '#tree' => TRUE,
     );
