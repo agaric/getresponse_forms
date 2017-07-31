@@ -360,7 +360,7 @@ class GetresponseFormsForm extends EntityForm {
       $this->updateFieldWeights($form_state->getValue('custom_fields'));
     }
 
-    $form_state->setRedirect('getresponse_forms.admin');
+    // $form_state->setRedirect('getresponse_forms.admin');
 
     parent::submitForm($form, $form_state);
   }
