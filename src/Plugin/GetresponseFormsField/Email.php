@@ -51,6 +51,10 @@ class Email extends PluginBase implements ConfigurableFieldInterface {
     // return $this->id;
   }
 
+  public function getPluginId() {
+    return 'getresponse_forms_email_field';
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -78,6 +82,7 @@ class Email extends PluginBase implements ConfigurableFieldInterface {
    */
   public function setConfiguration(array $configuration) {
     $this->configuration = $configuration;
+    return $this->configuration;
   }
 
   /**
