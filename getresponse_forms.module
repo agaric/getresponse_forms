@@ -58,7 +58,7 @@ function getresponse_forms_load_multiple($signup_ids = array(), $reset = FALSE) 
  * @return array
  *   A properly formatted Drupal form element.
  */
-function getresponse_forms_drupal_form_element($field, &$fieldset = NULL) {
+function getresponse_forms_drupal_form_element($field, &$fieldset = NULL, $form_state = NULL) {
   $weight = $field->getWeight();
   $definition = $field->getPluginDefinition();
   if (isset($definition['customFieldId'])) {
@@ -158,6 +158,14 @@ function getresponse_forms_drupal_form_element($field, &$fieldset = NULL) {
   // Special cases for GetResponse hidden defined fields:
   if ($field->hidden === TRUE) {
     $input['#type'] = 'hidden';
+  }
+
+  if ($form_state) {
+    // We can't manually set the default values because we don't seem to have the values in the form state.
+    // drupal_set_message(var_export($key, TRUE));
+//    $input['#default_value'] = $form_state->getValue($key, '');
+    // drupal_set_message(var_export($input, TRUE));
+    // drupal_set_message(var_export($form_state, TRUE));
   }
 
   if ($fieldset) {

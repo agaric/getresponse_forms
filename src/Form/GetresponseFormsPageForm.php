@@ -62,12 +62,12 @@ class GetresponseFormsPageForm extends FormBase {
       '#markup' => $this->signup->description,
     );
 
-    // $form['getresponse_lists'] = array('#tree' => TRUE);
+    foreach ($this->signup->getFields() as $field) {
+      getresponse_forms_drupal_form_element($field, $form, $form_state);
+    }
 
     $lists = getresponse_get_lists($this->signup->gr_lists);
-
     $lists_count = (!empty($lists)) ? count($lists) : 0;
-
     if (empty($lists)) {
       drupal_set_message($this->t('The subscription service is currently unavailable. Please try again later.'), 'warning');
     }
@@ -82,6 +82,8 @@ class GetresponseFormsPageForm extends FormBase {
           '#title' => t('Subscriptions'),
           '#options' => $options,
           '#required' => TRUE,
+//          '#default_value' => $form_state->getValue('getresponse_lists', []),
+          '#weight' => 80,
         ];
 
       }
@@ -92,29 +94,16 @@ class GetresponseFormsPageForm extends FormBase {
         '#type' => 'hidden',
         '#title' => $list->name,
         '#value' => $list->campaignId,
+        '#weight' => 80,
       );
 
     }
 
-    $form['custom_fields'] = array(
-      '#prefix' => '<div id="getresponse-forms-' . $this->signup->name . '-fields" class="getresponse-fields">',
-      '#suffix' => '</div>',
-      '#tree' => TRUE,
-    );
-
-    foreach ($this->signup->getFields() as $field) {
-      getresponse_forms_drupal_form_element($field, $form['custom_fields']);
-    }
-    /*
-    if (empty($this->signup->getFields())) {
-      $form['custom_fields']['#disabled'] = TRUE;
-    }
-     */
-
-    // $form['actions'] = ['#type' => 'actions'];
+    $form['actions'] = ['#type' => 'actions', '#weight' => 99];
     $form['actions']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->signup->submit_button,
+      '#button_type' => 'primary',
     ];
 
     return $form;
@@ -126,6 +115,10 @@ class GetresponseFormsPageForm extends FormBase {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $build_info = $form_state->getBuildInfo();
     $signup = $build_info['callback_object']->signup;
+
+    // Ensure that we have an e-mail address.
+    $email = $form_state->getValue('getresponse_forms_email_field');
+    drupal_set_message('hey ' . $email);
 
     // For forms that allow subscribing to multiple lists
     // ensure at least one list has been selected.
@@ -146,6 +139,7 @@ class GetresponseFormsPageForm extends FormBase {
         return;
       }
 
+      $form_state['redirect'] = FALSE;
       $form_state->setErrorByName('getresponse_lists', t("Please select at least one list to subscribe to."));
     }
   }
@@ -182,7 +176,9 @@ class GetresponseFormsPageForm extends FormBase {
       }
     }
 
-    $successes = array();
+    drupal_set_message(var_export($subscribe_lists, TRUE));
+    drupal_set_message(var_export($fields, TRUE));
+
 
     // Loop through the selected lists and try to subscribe.
     foreach ($subscribe_lists as $list_choices) {
@@ -191,7 +187,7 @@ class GetresponseFormsPageForm extends FormBase {
       // $result = mailchimp_subscribe($list_id, $email, $mergevars, $this->signup->settings['doublein']);
       $api_key = \Drupal::config('getresponse.settings')->get('api_key');
       $api     = new Api($api_key);
-      $result  = $api->addContact($fields);
+      // $result  = $api->addContact($fields);
 
       if (empty($result)) {
         drupal_set_message(t('There was a problem with your newsletter signup to %list.', array(
