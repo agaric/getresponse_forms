@@ -62,7 +62,7 @@ class GetresponseFormsPageForm extends FormBase {
       '#markup' => $this->signup->description,
     );
 
-    $form['getresponse_lists'] = array('#tree' => TRUE);
+    // $form['getresponse_lists'] = array('#tree' => TRUE);
 
     $lists = getresponse_get_lists($this->signup->gr_lists);
 
@@ -79,6 +79,7 @@ class GetresponseFormsPageForm extends FormBase {
 
         $form['getresponse_lists'] = [
           '#type' => 'checkboxes',
+          '#title' => t('Subscriptions'),
           '#options' => $options,
           '#required' => TRUE,
         ];
@@ -110,11 +111,10 @@ class GetresponseFormsPageForm extends FormBase {
     }
      */
 
-    $form['actions'] = ['#type' => 'actions'];
+    // $form['actions'] = ['#type' => 'actions'];
     $form['actions']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->signup->submit_button,
-      '#disabled' => (empty($lists)),
     ];
 
     return $form;
