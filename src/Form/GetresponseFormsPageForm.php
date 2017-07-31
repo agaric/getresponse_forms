@@ -218,12 +218,12 @@ class GetresponseFormsPageForm extends FormBase {
       drupal_set_message($this->signup->settings['confirmation_message'], 'status');
     }
 
-    $destination = $this->signup->settings['destination'];
+    $destination = $this->signup->destination;
     if (empty($destination)) {
       $destination_url = Url::fromRoute('<current>');
     }
     else {
-      $destination_url = Url::fromUri($base_url . '/' . $this->signup->settings['destination']);
+      $destination_url = Url::fromUri($base_url . '/' . $this->signup->destination);
     }
 
     $form_state->setRedirectUrl($destination_url);
