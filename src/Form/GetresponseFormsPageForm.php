@@ -119,7 +119,10 @@ class GetresponseFormsPageForm extends FormBase {
 
     // Ensure that we have an e-mail address.
     $email = $form_state->getValue('getresponse_forms_email_field');
-    drupal_set_message('hey ' . $email);
+    if (!$email) {
+      // TODO make sure we don't ever show them this when there is no form.
+      $form_state->setErrorByName('getresponse_forms_email_field', t("Please enter your e-mail address."));
+    }
 
     // For forms that allow subscribing to multiple lists
     // ensure at least one list has been selected.
