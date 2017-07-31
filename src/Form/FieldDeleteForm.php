@@ -43,7 +43,7 @@ class FieldDeleteForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function getCancelUrl() {
-    return $this->imageStyle->urlInfo('edit-form');
+    return $this->getresponseForm->urlInfo('edit-form');
   }
 
   /**
@@ -56,7 +56,9 @@ class FieldDeleteForm extends ConfirmFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, GetresponseFormsInterface $getresponse_form = NULL, $field = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, GetresponseFormsInterface $getresponse_forms = NULL, $field = NULL) {
+    print 'hi';
+    print_r($getresponse_forms);
     $this->getresponseForm = $getresponse_form;
     $this->field = $this->getresponseForm->getField($field);
 
@@ -67,9 +69,9 @@ class FieldDeleteForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $this->imageStyle->deleteImageEffect($this->imageEffect);
-    drupal_set_message($this->t('The image effect %name has been deleted.', ['%name' => $this->imageEffect->label()]));
-    $form_state->setRedirectUrl($this->imageStyle->urlInfo('edit-form'));
+    $this->getresponseForm->deleteField($this->field);
+    drupal_set_message($this->t('The field %name has been removed.', ['%name' => $this->field->label()]));
+    $form_state->setRedirectUrl($this->getresponseForm->urlInfo('edit-form'));
   }
 
 }

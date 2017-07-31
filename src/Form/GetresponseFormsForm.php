@@ -9,6 +9,7 @@ use Drupal\Core\Entity\Query\QueryFactory;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Link;
+use Drupal\getresponse_forms\FieldManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -19,11 +20,19 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class GetresponseFormsForm extends EntityForm {
 
   /**
+   * The image effect manager service.
+   *
+   * @var \Drupal\getresponse_forms\FieldManager
+   */
+  protected $fieldManager;
+
+  /**
    * @param \Drupal\Core\Entity\Query\QueryFactory $entity_query
    *   The entity query.
    */
-  public function __construct(QueryFactory $entity_query) {
+  public function __construct(QueryFactory $entity_query, FieldManager $field_manager) {
     $this->entityQuery = $entity_query;
+    $this->fieldManager = $field_manager;
   }
 
   /**
@@ -31,7 +40,8 @@ class GetresponseFormsForm extends EntityForm {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity.query')
+      $container->get('entity.query'),
+      $container->get('plugin.manager.getresponse_forms.field')
     );
   }
 
@@ -91,8 +101,8 @@ class GetresponseFormsForm extends EntityForm {
     $form['settings'] = array(
       '#type' => 'details',
       '#title' => 'Settings',
-      '#tree' => TRUE,
       '#open' => TRUE,
+      '#tree' => FALSE,
     );
 
     $form['settings']['path'] = array(
@@ -174,21 +184,20 @@ class GetresponseFormsForm extends EntityForm {
         'id' => 'getresponse-custom_fields',
       ],
       '#empty' => t('There are currently no custom_fields in this style. Add one by selecting an option below.'),
-      // Render custom_fields below parent elements.
-      '#weight' => 5,
     ];
-    // $this->entity->getFields() as $field
-    foreach ($this->custom_fields as $key) {
-      if (!$key)  continue;
-      // $key = $field->getUuid();
-      $field = $custom_fields[$key];
+    foreach ($this->entity->getFields() as $field) {
+    // foreach ($this->custom_fields as $key) {
+      // if (!$key)  continue;
+      $key = $field->getId(); // $key = $field->getUuid();
+      print 'have a ' . $key;
+      // $field = $custom_fields[$key];
       $form['custom_fields'][$key]['#attributes']['class'][] = 'draggable';
       $form['custom_fields'][$key]['#weight'] = isset($user_input['custom_fields']) ? $user_input['custom_fields'][$key]['weight'] : NULL;
       $form['custom_fields'][$key]['field'] = [
         '#tree' => FALSE,
         'data' => [
           'label' => [
-            '#plain_text' => $field->name,
+            '#plain_text' => $field->label(),
           ],
         ],
       ];
@@ -230,8 +239,8 @@ class GetresponseFormsForm extends EntityForm {
       $links['delete'] = [
         'title' => $this->t('Delete'),
         'url' => Url::fromRoute('getresponse.field_delete', [
-          'getresponse_form' => $this->entity->id(),
-          'custom_field' => $key,
+          'getresponse_forms' => $this->entity->id(),
+          'field' => $key,
         ]),
       ];
       $form['custom_fields'][$key]['operations'] = [
@@ -240,10 +249,11 @@ class GetresponseFormsForm extends EntityForm {
       ];
     }
 
-    // Build the new image field addition form and add it to the field list.
+    // Build the new field addition form and add it to the field list.
     $new_field_options = [];
-    foreach ($custom_fields as $key => $field) {
-      $new_field_options[$key] = $field->name;
+    $custom_fields = $this->fieldManager->getDefinitions();
+    foreach ($custom_fields as $field => $definition) {
+      $new_field_options[$field] = $definition['admin_label'];
     }
     $form['custom_fields']['new'] = [
       '#tree' => FALSE,
@@ -317,7 +327,7 @@ class GetresponseFormsForm extends EntityForm {
     $this->save($form, $form_state);
 
     // Check if this field has any configuration options.
-    $effect = $this->imageEffectManager->getDefinition($form_state->getValue('new'));
+    $field = $this->fieldManager->getDefinition($form_state->getValue('new'));
 
     // Load the configuration form for this option.
     if (is_subclass_of($effect['class'], '\Drupal\image\ConfigurableImageEffectInterface')) {
@@ -330,17 +340,17 @@ class GetresponseFormsForm extends EntityForm {
         ['query' => ['weight' => $form_state->getValue('weight')]]
       );
     }
-    // If there's no form, immediately add the image effect.
+    // If there's no form, immediately add the field.
     else {
-      $effect = [
-        'id' => $effect['id'],
+      $field = [
+        'id' => $field['id'],
         'data' => [],
         'weight' => $form_state->getValue('weight'),
       ];
-      $effect_id = $this->entity->addImageEffect($effect);
+      $field_id = $this->entity->addField($field);
       $this->entity->save();
-      if (!empty($effect_id)) {
-        drupal_set_message($this->t('The image effect was successfully applied.'));
+      if (!empty($field_id)) {
+        drupal_set_message($this->t('The field was successfully added.'));
       }
     }
   }
@@ -350,9 +360,9 @@ class GetresponseFormsForm extends EntityForm {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
-    // Update image effect weights.
-    if (!$form_state->isValueEmpty('effects')) {
-      $this->updateEffectWeights($form_state->getValue('effects'));
+    // Update field weights.
+    if (!$form_state->isValueEmpty('fields')) {
+      $this->updateFieldWeights($form_state->getValue('fields'));
     }
 
     parent::submitForm($form, $form_state);

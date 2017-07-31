@@ -6,6 +6,7 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\Core\Entity\EntityWithPluginCollectionInterface;
 use Drupal\getresponse_forms\GetresponseFormsInterface;
 use Drupal\getresponse_forms\FieldInterface;
+use Drupal\getresponse_forms\FieldPluginCollection;
 
 /**
  * Defines the GetresponseForms (take this to mean a GetResponse Forms form) entity.
@@ -38,8 +39,15 @@ use Drupal\getresponse_forms\FieldInterface;
  *   config_export = {
  *     "id",
  *     "title",
+ *     "description",
+ *     "mode",
+ *     "path",
+ *     "submit_button",
+ *     "confirmation_message",
+ *     "destination",
  *     "gr_lists",
- *     "fields"
+ *     "fields",
+ *     "doublein"
  *   }
  * )
  */
@@ -77,7 +85,7 @@ class GetresponseForms extends ConfigEntityBase implements GetresponseFormsInter
   protected $fields = [];
 
   /**
-   * Holds the collection of image effects that are used by this image style.
+   * Holds the collection of GetResponse fields that are used by this form.
    *
    * @var \Drupal\getresponse_forms\FieldPluginCollection
    */
@@ -139,25 +147,25 @@ class GetresponseForms extends ConfigEntityBase implements GetresponseFormsInter
    */
   public function getFields() {
     if (!$this->fieldsCollection) {
-      $this->fieldsCollection = new FieldPluginCollection($this->getFieldPluginManager(), $this->effects);
-      $this->effectsCollection->sort();
+      $this->fieldsCollection = new FieldPluginCollection($this->getFieldPluginManager(), $this->fields);
+      $this->fieldsCollection->sort();
     }
-    return $this->effectsCollection;
+    return $this->fieldsCollection;
   }
 
   /**
    * {@inheritdoc}
    */
   public function getPluginCollections() {
-    return ['effects' => $this->getEffects()];
+    return ['fields' => $this->getFields()];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function addImageEffect(array $configuration) {
+  public function addField(array $configuration) {
     $configuration['uuid'] = $this->uuidGenerator()->generate();
-    $this->getEffects()->addInstanceId($configuration['uuid'], $configuration);
+    $this->getFields()->addInstanceId($configuration['uuid'], $configuration);
     return $configuration['uuid'];
   }
 
@@ -169,10 +177,10 @@ class GetresponseForms extends ConfigEntityBase implements GetresponseFormsInter
   }
 
   /**
-   * Returns the image effect plugin manager.
+   * Returns the GetResponse field plugin manager.
    *
    * @return \Drupal\Component\Plugin\PluginManagerInterface
-   *   The image effect plugin manager.
+   *   The GetResponse field plugin manager.
    */
   protected function getFieldPluginManager() {
     return \Drupal::service('plugin.manager.getresponse_forms.field');

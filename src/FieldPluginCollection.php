@@ -5,7 +5,7 @@ namespace Drupal\getresponse_forms;
 use Drupal\Core\Plugin\DefaultLazyPluginCollection;
 
 /**
- * A collection of image effects.
+ * A collection of GetResponse fields.
  */
 class FieldPluginCollection extends DefaultLazyPluginCollection {
 

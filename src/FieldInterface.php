@@ -19,17 +19,6 @@ use Drupal\Core\Image\ImageInterface;
 interface FieldInterface extends PluginInspectionInterface, ConfigurablePluginInterface {
 
   /**
-   * Applies an image effect to the image object.
-   *
-   * @param \Drupal\Core\Image\ImageInterface $image
-   *   An image file object.
-   *
-   * @return bool
-   *   TRUE on success. FALSE if unable to perform the image effect on the image.
-   */
-  public function applyEffect(ImageInterface $image);
-
-  /**
    * Returns a render array summarizing the configuration of the image effect.
    *
    * @return array
