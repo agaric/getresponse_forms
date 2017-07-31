@@ -200,7 +200,7 @@ class GetresponseFormsPageForm extends FormBase {
       }
     }
     drupal_set_message(var_export($request, TRUE));
-    // $result = mailchimp_subscribe($list_id, $email, $mergevars, $this->signup->settings['doublein']);
+    // $result = mailchimp_subscribe($list_id, $email, $mergevars);
     $api_key = \Drupal::config('getresponse.settings')->get('api_key');
     $api     = new Api($api_key);
     // $result  = $api->addContact($fields);
@@ -214,8 +214,8 @@ class GetresponseFormsPageForm extends FormBase {
       $successes[] = $list_details[$list_id]->name;
     }
 
-    if (count($successes) && strlen($this->signup->settings['confirmation_message'])) {
-      drupal_set_message($this->signup->settings['confirmation_message'], 'status');
+    if (count($successes) && strlen($this->signup->confirmation_message)) {
+      drupal_set_message($this->signup->confirmation_message, 'status');
     }
 
     $destination = $this->signup->destination;

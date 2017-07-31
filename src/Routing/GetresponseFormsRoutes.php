@@ -22,7 +22,7 @@ class GetresponseFormsRoutes {
       if ((intval($signup->mode) == GETRESPONSE_FORMS_PAGE) || (intval($signup->mode) == GETRESPONSE_FORMS_BOTH)) {
         $routes['getresponse_forms.' . $signup->id] = new Route(
           // Route Path.
-          '/' . $signup->settings['path'],
+          '/' . $signup->path,
           // Route defaults.
           array(
             '_controller' => '\Drupal\getresponse_forms\Controller\GetresponseFormsController::page',

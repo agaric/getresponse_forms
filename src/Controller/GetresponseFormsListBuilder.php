@@ -32,7 +32,7 @@ class GetresponseFormsListBuilder extends ConfigEntityListBuilder {
     global $base_url;
 
     $block_url = Url::fromRoute('block.admin_display');
-    $page_url = Url::fromUri($base_url . '/' . $entity->settings['path']);
+    $page_url = Url::fromUri($base_url . '/' . $entity->path);
 
     $block_mode = [
       '#title' => $this->t('Block'),
