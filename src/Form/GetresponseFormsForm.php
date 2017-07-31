@@ -389,7 +389,6 @@ class GetresponseFormsForm extends EntityForm {
 
     // Update field weights.
     if (!$form_state->isValueEmpty('custom_fields')) {
-      drupal_set_message('no?');
       $this->updateFieldWeights($form_state->getValue('custom_fields'));
     }
 
@@ -419,10 +418,8 @@ class GetresponseFormsForm extends EntityForm {
     *   with field data as values.
     */
    protected function updateFieldWeights(array $fields) {
-     drupal_set_message(var_export($fields, TRUE));
      foreach ($fields as $uuid => $field_data) {
        if ($this->entity->getFields()->has($uuid)) {
-         drupal_set_message('well ' . $uuid . ' : ' . $field_data['weight']);
          $this->entity->getField($uuid)->setWeight($field_data['weight']);
        }
      }

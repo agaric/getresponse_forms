@@ -143,7 +143,6 @@ class GetresponseFormsPageForm extends FormBase {
         return;
       }
 
-      $form_state['redirect'] = FALSE;
       $form_state->setErrorByName('getresponse_lists', t("Please select at least one list to subscribe to."));
     }
   }
@@ -161,8 +160,6 @@ class GetresponseFormsPageForm extends FormBase {
     // Filter out blank fields so we don't erase values on the GetResponse side.
     $custom_fields = array_filter($form_state->getValue('custom_fields'));
 
-    $email = $custom_fields['EMAIL'];
-
     $getresponse_lists = $form_state->getValue('getresponse_lists');
 
     // If we only have one list we won't have checkbox values to investigate.
@@ -179,9 +176,6 @@ class GetresponseFormsPageForm extends FormBase {
         }
       }
     }
-
-    drupal_set_message(var_export($subscribe_lists, TRUE));
-    drupal_set_message(var_export($fields, TRUE));
 
 
     // Loop through the selected lists and try to subscribe.
