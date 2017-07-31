@@ -60,6 +60,7 @@ class GetresponseFormsPageForm extends FormBase {
 
     $form['description'] = array(
       '#markup' => $this->signup->description,
+      '#weight' => -80,
     );
 
     foreach ($this->signup->getFields() as $field) {
