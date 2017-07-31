@@ -338,7 +338,7 @@ class GetresponseFormsForm extends EntityForm {
     // If there's no form, immediately add the field.
     else {
       $field = [
-        'id' => $field['plugin_id'],
+        'id' => isset($field['plugin_id']) ? $field['plugin_id'] : $field['id'],
         'data' => [],
         'weight' => $form_state->getValue('weight'),
       ];
