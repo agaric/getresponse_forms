@@ -3,6 +3,7 @@
 namespace Drupal\getresponse_forms\Plugin\GetresponseFormsField;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Component\Plugin\PluginBase;
 use Drupal\getresponse_forms\ConfigurableFieldInterface;
 
 /**
@@ -14,13 +15,20 @@ use Drupal\getresponse_forms\ConfigurableFieldInterface;
  *   deriver = "Drupal\getresponse_forms\Plugin\Derivative\CustomField"
  * )
  */
-class CustomField implements ConfigurableFieldInterface {
+class CustomField extends PluginBase implements ConfigurableFieldInterface {
 
   /**
    * {@inheritdoc}
    */
   public function getUuid() {
-    return $this->uuid;
+    return $this->configuration['uuid'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getId() {
+    return 'getresponse_forms_custom_field:' . $this->customFieldId;
   }
 
   /**
@@ -28,6 +36,44 @@ class CustomField implements ConfigurableFieldInterface {
    */
   public function getPluginId() {
     return 'getresponse_forms_custom_field:' . $this->customFieldId;
+  }
+
+
+  /**
+   * {@inheritdoc}
+   */
+  public function label() {
+    return $this->pluginDefinition['label'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getWeight() {
+    return $this->configuration['weight'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setWeight($weight) {
+    $this->configuration['weight'] = $weight;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getConfiguration() {
+    return $this->configuration;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setConfiguration(array $configuration) {
+    $this->configuration = $configuration;
+    return $this->configuration;
   }
 
   /**
@@ -68,10 +114,24 @@ class CustomField implements ConfigurableFieldInterface {
   /**
    * {@inheritdoc}
    */
+  public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
+    parent::validateConfigurationForm($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     parent::submitConfigurationForm($form, $form_state);
 
     $this->configuration['label'] = $form_state->getValue('label');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function calculateDependencies() {
+    return [];
   }
 
 }

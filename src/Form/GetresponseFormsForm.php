@@ -77,7 +77,7 @@ class GetresponseFormsForm extends EntityForm {
     $form['description'] = array(
       '#type' => 'textarea',
       '#title' => 'Description',
-      '#default_value' => isset($signup->settings['description']) ? $signup->settings['description'] : '',
+      '#default_value' => isset($signup->description) ? $signup->description : '',
       '#rows' => 2,
       '#maxlength' => 500,
       '#description' => t('This description will be shown on the signup form below the title. (500 characters or less)'),
@@ -102,14 +102,13 @@ class GetresponseFormsForm extends EntityForm {
       '#type' => 'details',
       '#title' => 'Settings',
       '#open' => TRUE,
-      '#tree' => FALSE,
     );
 
     $form['settings']['path'] = array(
       '#type' => 'textfield',
       '#title' => 'Page URL',
       '#description' => t('Path to the signup page. ie "newsletter/signup".'),
-      '#default_value' => isset($signup->settings['path']) ? $signup->settings['path'] : NULL,
+      '#default_value' => isset($signup->path) ? $signup->path : NULL,
       '#states' => array(
         // Hide unless needed.
         'visible' => array(
@@ -125,21 +124,21 @@ class GetresponseFormsForm extends EntityForm {
       '#type' => 'textfield',
       '#title' => 'Submit Button Label',
       '#required' => 'TRUE',
-      '#default_value' => isset($signup->settings['submit_button']) ? $signup->settings['submit_button'] : 'Submit',
+      '#default_value' => isset($signup->submit_button) ? $signup->submit_button : 'Submit',
     );
 
     $form['settings']['confirmation_message'] = array(
       '#type' => 'textfield',
       '#title' => 'Confirmation Message',
       '#description' => 'This message will appear after a successful submission of this form. Leave blank for no message, but make sure you configure a destination in that case unless you really want to confuse your site visitors.',
-      '#default_value' => isset($signup->settings['confirmation_message']) ? $signup->settings['confirmation_message'] : 'You have been successfully subscribed.',
+      '#default_value' => isset($signup->confirmation_message) ? $signup->confirmation_message : 'You have been successfully subscribed.',
     );
 
     $form['settings']['destination'] = array(
       '#type' => 'textfield',
       '#title' => 'Form destination page',
       '#description' => 'Leave blank to stay on the form page.',
-      '#default_value' => isset($signup->settings['destination']) ? $signup->settings['destination'] : NULL,
+      '#default_value' => isset($signup->destination) ? $signup->destination : NULL,
     );
 
     $form['gr_lists_config'] = array(
@@ -301,7 +300,7 @@ class GetresponseFormsForm extends EntityForm {
       '#type' => 'checkbox',
       '#title' => t('Require subscribers to Double Opt-in TODO see if GetResponse has this option'),
       '#description' => t('New subscribers will be sent a link with an email they must follow to confirm their subscription.'),
-      '#default_value' => isset($signup->settings['doublein']) ? $signup->settings['doublein'] : FALSE,
+      '#default_value' => isset($signup->doublein) ? $signup->doublein : FALSE,
     );
 
     return $form;
@@ -357,9 +356,11 @@ class GetresponseFormsForm extends EntityForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
     // Update field weights.
-    if (!$form_state->isValueEmpty('fields')) {
-      $this->updateFieldWeights($form_state->getValue('fields'));
+    if (!$form_state->isValueEmpty('custom_fields')) {
+      $this->updateFieldWeights($form_state->getValue('custom_fields'));
     }
+
+    $form_state->setRedirect('getresponse_forms.admin');
 
     parent::submitForm($form, $form_state);
   }
@@ -375,31 +376,29 @@ class GetresponseFormsForm extends EntityForm {
     $signup = $this->getEntity();
     $signup->mode = array_sum($mode);
 
-    $customfields = $form_state->getValue('customfields');
+    // $customfields = $form_state->getValue('customfields');
 
     $gr_lists = $form_state->getValue('gr_lists') ? $form_state->getValue('gr_lists') : $signup->gr_lists;
 
-    foreach ($mergefields as $id => $val) {
-      if ($val) {
-        // Can't store objects in configuration; serialize this.
-        $mergefields[$id] = serialize($mergevar_options[$id]);
-      }
-    }
-
-    $signup->settings['mergefields'] = $mergefields;
-    $signup->settings['description'] = $form_state->getValue('description');
-    $signup->settings['doublein'] = $form_state->getValue('doublein');
-
     // Clear path value if mode doesn't include signup page.
     if (!isset($mode[GETRESPONSE_FORMS_PAGE])) {
-      $signup->settings['path'] = '';
+      $signup->path = '';
     }
 
     $signup->save();
 
+    // Update field weights.
+    if (!$form_state->isValueEmpty('custom_fields')) {
+      drupal_set_message('no?');
+      $this->updateFieldWeights($form_state->getValue('custom_fields'));
+    }
+
+
+    // drupal_set_message(var_export($signup, TRUE));
+
     \Drupal::service('router.builder')->setRebuildNeeded();
 
-    $form_state->setRedirect('getresponse_forms.admin');
+    drupal_set_message($this->t('@name form saved', ['@name' => $form_state->getValue('title')]));
   }
 
 
@@ -410,5 +409,24 @@ class GetresponseFormsForm extends EntityForm {
       ->execute();
     return (bool) $entity;
   }
+
+
+  /**
+    * Updates field weights.
+    *
+    * @param array $fields
+    *   Associative array with fields having uuid as keys and array
+    *   with field data as values.
+    */
+   protected function updateFieldWeights(array $fields) {
+     drupal_set_message(var_export($fields, TRUE));
+     foreach ($fields as $uuid => $field_data) {
+       if ($this->entity->getFields()->has($uuid)) {
+         drupal_set_message('well ' . $uuid . ' : ' . $field_data['weight']);
+         $this->entity->getField($uuid)->setWeight($field_data['weight']);
+       }
+     }
+     $this->entity->save();
+   }
 
 }
