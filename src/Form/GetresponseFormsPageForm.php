@@ -178,23 +178,40 @@ class GetresponseFormsPageForm extends FormBase {
     }
 
 
-    // Loop through the selected lists and try to subscribe.
-    foreach ($subscribe_lists as $list_choices) {
-      $list_id = $list_choices['subscribe'];
-
-      // $result = mailchimp_subscribe($list_id, $email, $mergevars, $this->signup->settings['doublein']);
-      $api_key = \Drupal::config('getresponse.settings')->get('api_key');
-      $api     = new Api($api_key);
-      // $result  = $api->addContact($fields);
-
-      if (empty($result)) {
-        drupal_set_message(t('There was a problem with your newsletter signup to %list.', array(
-          '%list' => $list_details[$list_id]->name,
-        )), 'warning');
+    $request = [
+      "name" => $form_state->getValue('getresponse_forms_name_field'),
+      "email" => $form_state->getValue('getresponse_forms_email_field'),
+      "campaign" => [
+        "campaignId" => reset($subscribe_lists),
+      ],
+      "customFieldValues" => [],
+    ];
+    foreach ($this->signup->getFields() as $field) {
+      $definition = $field->getPluginDefinition();
+      if (isset($definition['customFieldId'])) {
+        $key = $definition['name'];
+        $value = $form_state->getValue($key);
+        if ($value) {
+          $request["customFieldValues"][] = [
+            "customFieldId" => $definition['customFieldId'],
+            "value" => is_array($value) ? $value : [$value],
+          ];
+        }
       }
-      else {
-        $successes[] = $list_details[$list_id]->name;
-      }
+    }
+    drupal_set_message(var_export($request, TRUE));
+    // $result = mailchimp_subscribe($list_id, $email, $mergevars, $this->signup->settings['doublein']);
+    $api_key = \Drupal::config('getresponse.settings')->get('api_key');
+    $api     = new Api($api_key);
+    // $result  = $api->addContact($fields);
+
+    if (empty($result)) {
+      drupal_set_message(t('There was a problem with your newsletter signup to %list.', array(
+        '%list' => $list_details[$list_id]->name,
+      )), 'warning');
+    }
+    else {
+      $successes[] = $list_details[$list_id]->name;
     }
 
     if (count($successes) && strlen($this->signup->settings['confirmation_message'])) {
