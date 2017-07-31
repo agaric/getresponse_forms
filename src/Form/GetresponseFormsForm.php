@@ -186,11 +186,7 @@ class GetresponseFormsForm extends EntityForm {
       '#empty' => t('There are currently no custom_fields in this style. Add one by selecting an option below.'),
     ];
     foreach ($this->entity->getFields() as $field) {
-    // foreach ($this->custom_fields as $key) {
-      // if (!$key)  continue;
-      $key = $field->getId(); // $key = $field->getUuid();
-      print 'have a ' . $key;
-      // $field = $custom_fields[$key];
+      $key = $field->getUuid();
       $form['custom_fields'][$key]['#attributes']['class'][] = 'draggable';
       $form['custom_fields'][$key]['#weight'] = isset($user_input['custom_fields']) ? $user_input['custom_fields'][$key]['weight'] : NULL;
       $form['custom_fields'][$key]['field'] = [
@@ -253,7 +249,7 @@ class GetresponseFormsForm extends EntityForm {
     $new_field_options = [];
     $custom_fields = $this->fieldManager->getDefinitions();
     foreach ($custom_fields as $field => $definition) {
-      $new_field_options[$field] = $definition['admin_label'];
+      $new_field_options[$field] = $definition['label'];
     }
     $form['custom_fields']['new'] = [
       '#tree' => FALSE,
@@ -343,7 +339,7 @@ class GetresponseFormsForm extends EntityForm {
     // If there's no form, immediately add the field.
     else {
       $field = [
-        'id' => $field['id'],
+        'id' => $field['plugin_id'],
         'data' => [],
         'weight' => $form_state->getValue('weight'),
       ];

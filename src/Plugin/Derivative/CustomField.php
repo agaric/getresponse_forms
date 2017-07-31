@@ -16,12 +16,11 @@ class CustomField extends DeriverBase {
    */
   public function getDerivativeDefinitions($base_plugin_definition) {
     $custom_fields = getresponse_get_custom_fields();
-
-    /* @var $signup \Drupal\getresponse_forms\Entity\GetresponseForms */
     foreach ($custom_fields as $key => $field) {
-      print 'key ' . $key;
       $this->derivatives[$key] = $base_plugin_definition;
-      $this->derivatives[$key]['admin_label'] = t('GetResponse Field: @name', array('@name' => $field->name));
+      $this->derivatives[$key]['admin_label'] = t('GetResponse Custom Field: @name', array('@name' => $field->name));
+      $this->derivatives[$key]['label'] = t('Custom: @name', array('@name' => $field->name));
+      $this->derivatives[$key]['plugin_id'] = 'getresponse_forms_custom_field:' . $field->customFieldId;
     }
 
     return $this->derivatives;

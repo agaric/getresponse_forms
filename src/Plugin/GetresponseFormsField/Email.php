@@ -40,7 +40,7 @@ class Email extends PluginBase implements ConfigurableFieldInterface {
    * {@inheritdoc}
    */
   public function getUuid() {
-    return $this->uuid;
+    return $this->configuration['uuid'];
   }
 
   /**

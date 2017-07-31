@@ -19,6 +19,20 @@ class CustomField implements ConfigurableFieldInterface {
   /**
    * {@inheritdoc}
    */
+  public function getUuid() {
+    return $this->uuid;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPluginId() {
+    return 'getresponse_forms_custom_field:' . $this->customFieldId;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getSummary() {
     $summary = [
       '#theme' => 'image_resize_summary',

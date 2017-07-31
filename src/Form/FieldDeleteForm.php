@@ -57,9 +57,7 @@ class FieldDeleteForm extends ConfirmFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, GetresponseFormsInterface $getresponse_forms = NULL, $field = NULL) {
-    print 'hi';
-    print_r($getresponse_forms);
-    $this->getresponseForm = $getresponse_form;
+    $this->getresponseForm = $getresponse_forms;
     $this->field = $this->getresponseForm->getField($field);
 
     return parent::buildForm($form, $form_state);
