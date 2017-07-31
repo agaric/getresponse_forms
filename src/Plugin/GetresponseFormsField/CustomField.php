@@ -38,7 +38,6 @@ class CustomField extends PluginBase implements ConfigurableFieldInterface {
     return 'getresponse_forms_custom_field:' . $this->customFieldId;
   }
 
-
   /**
    * {@inheritdoc}
    */

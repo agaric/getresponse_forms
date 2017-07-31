@@ -58,18 +58,34 @@ function getresponse_forms_load_multiple($signup_ids = array(), $reset = FALSE) 
  * @return array
  *   A properly formatted Drupal form element.
  */
-function getresponse_forms_drupal_form_element($field) {
-  // Insert common FormAPI properties:
-  $input = array(
-    '#weight' => isset($field->weight) ? $field->weight : 0,
-    '#required' => isset($field->required) ? $field->required : FALSE,
-  );
-
-  if (is_string($field->name)) {
-    $input['#title'] = t('@field', array('@field' => $field->name));
+function getresponse_forms_drupal_form_element($field, &$fieldset = NULL) {
+  $weight = $field->getWeight();
+  $definition = $field->getPluginDefinition();
+  if (isset($definition['customFieldId'])) {
+    $key = $definition['name'];
+    $name = ucfirst($definition['name']);
+    $gr_fields = getresponse_get_custom_fields();
+    if (isset($gr_fields[$definition['customFieldId']])) {
+      $field = $gr_fields[$definition['customFieldId']];
+    }
   }
   else {
-    $input['#title'] = $field->name;
+    // This is a non-custom GetResponse field.
+    $key = $definition['id'];
+    $name = $definition['label'];
+    $field = (object) ['fieldType' => 'text'];
+  }
+  // Insert common FormAPI properties:
+  $input = array(
+    '#weight' => isset($weight) ? $weight : 0,
+    '#required' => isset($required) ? $required : FALSE,
+  );
+
+  if (is_string($name)) {
+    $input['#title'] = t('@field', array('@field' => $name));
+  }
+  else {
+    $input['#title'] = $name;
   }
 
   switch ($field->fieldType) {
@@ -135,7 +151,7 @@ function getresponse_forms_drupal_form_element($field) {
       // This is a standard input[type=text] or something we can't handle with
       // Drupal FormAPI.
       $input['#type'] = 'textfield';
-      $input['#size'] = $field->options->size;
+      // $input['#size'] = $field->options->size;
       break;
   }
 
@@ -144,5 +160,8 @@ function getresponse_forms_drupal_form_element($field) {
     $input['#type'] = 'hidden';
   }
 
+  if ($fieldset) {
+    $fieldset[$key] = $input;
+  }
   return $input;
 }

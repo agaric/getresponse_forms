@@ -103,20 +103,19 @@ class GetresponseFormsPageForm extends FormBase {
       '#tree' => TRUE,
     );
 
-    foreach ($this->signup->settings['mergefields'] as $tag => $mergevar_str) {
-      if (!empty($mergevar_str)) {
-        $mergevar = unserialize($mergevar_str);
-        $form['custom_fields'][$tag] = getresponse_forms_drupal_form_element($mergevar);
-        if (empty($lists)) {
-          $form['custom_fields'][$tag]['#disabled'] = TRUE;
-        }
-      }
+    foreach ($this->signup->getFields() as $field) {
+      getresponse_forms_drupal_form_element($field, $form['custom_fields']);
     }
+    /*
+    if (empty($this->signup->getFields())) {
+      $form['custom_fields']['#disabled'] = TRUE;
+    }
+     */
 
     $form['actions'] = ['#type' => 'actions'];
     $form['actions']['submit'] = [
       '#type' => 'submit',
-      '#value' => $this->signup->settings['submit_button'],
+      '#value' => $this->signup->submit_button,
       '#disabled' => (empty($lists)),
     ];
 

@@ -21,6 +21,8 @@ class CustomField extends DeriverBase {
       $this->derivatives[$key]['admin_label'] = t('GetResponse Custom Field: @name', array('@name' => $field->name));
       $this->derivatives[$key]['label'] = t('Custom: @name', array('@name' => $field->name));
       $this->derivatives[$key]['plugin_id'] = 'getresponse_forms_custom_field:' . $field->customFieldId;
+      $this->derivatives[$key]['name'] = $field->name;
+      $this->derivatives[$key]['customFieldId'] = $field->customFieldId;
     }
 
     return $this->derivatives;
