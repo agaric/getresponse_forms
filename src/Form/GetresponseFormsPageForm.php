@@ -153,8 +153,6 @@ class GetresponseFormsPageForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     global $base_url;
 
-    $list_details = getresponse_get_lists($this->signup->gr_lists);
-
     $subscribe_lists = array();
 
     // Filter out blank fields so we don't erase values on the GetResponse side.
@@ -177,7 +175,7 @@ class GetresponseFormsPageForm extends FormBase {
       }
     }
 
-    $list_id = reset($subscribe_lists);
+    $list_id = reset(reset($subscribe_lists));
 
     $request = [
       "name" => $form_state->getValue('getresponse_forms_name_field'),
@@ -200,18 +198,22 @@ class GetresponseFormsPageForm extends FormBase {
         }
       }
     }
-    drupal_set_message(var_export($request, TRUE));
+
     $api_key = \Drupal::config('getresponse.settings')->get('api_key');
     $api     = new Api($api_key);
     $result  = $api->addContact($request);
 
-    if (empty($result)) {
-      drupal_set_message(t('There was a problem with your newsletter signup to %list.', array(
-        '%list' => $list_details[$list_id]->name,
-      )), 'warning');
+    if (isset($result->httpStatus) && $result->httpStatus >= 400) {
+      $list = reset(getresponse_get_lists([$list_id]));
+
+      drupal_set_message(t('There was a problem with your newsletter signup to %list.',
+        ['%list' => $list->name]), 'warning');
+
+      \Drupal::logger('getresponse_forms')->error('An error occurred while creating contact with request: {request}.  GetResponse responded: {result}', ['request' => var_export($request, TRUE), 'result' => var_export($result, TRUE)]);
     }
     else {
-      $successes[] = $list_details[$list_id]->name;
+      $successes[] = $list->name;
+      drupal_set_message($list->name);
     }
 
     if (count($successes) && strlen($this->signup->confirmation_message)) {
