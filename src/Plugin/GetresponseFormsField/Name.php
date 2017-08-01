@@ -59,14 +59,14 @@ class Name extends PluginBase implements ConfigurableFieldInterface {
    * {@inheritdoc}
    */
   public function getWeight() {
-    return $this->weight;
+    return $this->configuration['weight'];
   }
 
   /**
    * {@inheritdoc}
    */
   public function setWeight($weight) {
-    $this->weight = $weight;
+    $this->configuration['weight'] = $weight;
     return $this;
   }
 
