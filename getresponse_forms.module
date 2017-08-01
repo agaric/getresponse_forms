@@ -63,7 +63,7 @@ function getresponse_forms_drupal_form_element($field, &$fieldset = NULL, $form_
   $definition = $field->getPluginDefinition();
   if (isset($definition['customFieldId'])) {
     $key = $definition['name'];
-    $name = ucfirst($definition['name']);
+    $name = ucfirst(trim(str_replace('_', ' ', $definition['name'])));
     $gr_fields = getresponse_get_custom_fields();
     if (isset($gr_fields[$definition['customFieldId']])) {
       $field = $gr_fields[$definition['customFieldId']];
