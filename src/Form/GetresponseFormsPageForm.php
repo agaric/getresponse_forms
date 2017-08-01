@@ -177,12 +177,13 @@ class GetresponseFormsPageForm extends FormBase {
       }
     }
 
+    $list_id = reset($subscribe_lists);
 
     $request = [
       "name" => $form_state->getValue('getresponse_forms_name_field'),
       "email" => $form_state->getValue('getresponse_forms_email_field'),
       "campaign" => [
-        "campaignId" => reset($subscribe_lists),
+        "campaignId" => $list_id,
       ],
       "customFieldValues" => [],
     ];
@@ -200,10 +201,9 @@ class GetresponseFormsPageForm extends FormBase {
       }
     }
     drupal_set_message(var_export($request, TRUE));
-    // $result = mailchimp_subscribe($list_id, $email, $mergevars);
     $api_key = \Drupal::config('getresponse.settings')->get('api_key');
     $api     = new Api($api_key);
-    // $result  = $api->addContact($fields);
+    $result  = $api->addContact($request);
 
     if (empty($result)) {
       drupal_set_message(t('There was a problem with your newsletter signup to %list.', array(
