@@ -296,13 +296,6 @@ class GetresponseFormsForm extends EntityForm {
       '#open' => TRUE,
     );
 
-    $form['subscription_settings']['doublein'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Require subscribers to Double Opt-in TODO see if GetResponse has this option'),
-      '#description' => t('New subscribers will be sent a link with an email they must follow to confirm their subscription.'),
-      '#default_value' => isset($signup->doublein) ? $signup->doublein : FALSE,
-    );
-
     return $form;
   }
 

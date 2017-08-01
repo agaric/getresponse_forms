@@ -22,9 +22,6 @@ getresponse_forms.getresponse_forms.*:
     description:
       type: text
       label: 'Description'
-    doublein:
-      type: boolean
-      label: 'Double-Opt-In'
     send_welcome:
       type: boolean
       label: 'Send Welcome'

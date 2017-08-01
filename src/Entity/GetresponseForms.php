@@ -48,7 +48,6 @@ use Drupal\getresponse_forms\FieldPluginCollection;
  *     "destination",
  *     "gr_lists",
  *     "fields",
- *     "doublein"
  *   }
  * )
  */
