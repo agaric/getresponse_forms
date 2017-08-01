@@ -31,19 +31,15 @@ getresponse_forms.getresponse_forms.*:
     status:
       type: boolean
       label: 'Status'
-    settings:
-      type: mapping
-      label: 'Settings'
-      mapping:
-        path:
-          type: string
-          label: 'Path'
-        submit_button:
-          type: text
-          label: 'Submit Button'
-        confirmation_message:
-          type: text
-          label: 'Confirmation Message'
-        destination:
-          type: string
-          label: 'Destination'
+    path:
+      type: string
+      label: 'Path'
+    submit_button:
+      type: text
+      label: 'Submit Button'
+    confirmation_message:
+      type: text
+      label: 'Confirmation Message'
+    destination:
+      type: string
+      label: 'Destination'
