@@ -161,7 +161,17 @@ function getresponse_forms_drupal_form_element($field, &$fieldset = NULL, $form_
   }
 
   // Add template suggestions based on being signup fields, and field type.
-  // $input['#theme'] = 'input__' . $input['#type'] . '__signup__' . $field->fieldType;
+  // This division based on https://www.drupal.org/files/drupal8.theme-input.23.patch
+  // from https://www.drupal.org/node/1812724
+  drupal_set_message(var_export($input['#theme_wrappers']));
+  $input_types = ['button', 'image_button', 'textfield', 'tel', 'email', 'url', 'search', 'number', 'range', 'color', 'password', 'checkbox', 'radio', 'file'];
+  $match_types = ['checkboxes', 'select', 'radios', 'container', 'vertical_tabs'];
+  if (in_array($input['#type'], $input_types)) {
+    $input['#theme'] = 'input__' . $input['#type'] . '__signup__' . $field->fieldType;
+  }
+  elseif (in_array($input['#type'], $match_types)) {
+    $input['#theme'] = $input['#type'] . '__signup__' . $field->fieldType;
+  }
 
   if ($form_state) {
     // We can't manually set the default values because we don't seem to have the values in the form state.
