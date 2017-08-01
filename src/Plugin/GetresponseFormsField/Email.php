@@ -11,7 +11,7 @@ use Drupal\getresponse_forms\ConfigurableFieldInterface;
  *
  * @GetresponseFormsField(
  *   id = "getresponse_forms_email_field",
- *   label = @Translation("E-mail field"),
+ *   label = @Translation("E-mail"),
  * )
  */
 class Email extends PluginBase implements ConfigurableFieldInterface {
