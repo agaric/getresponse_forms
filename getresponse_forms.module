@@ -160,6 +160,9 @@ function getresponse_forms_drupal_form_element($field, &$fieldset = NULL, $form_
     $input['#type'] = 'hidden';
   }
 
+  // Add template suggestions based on being signup fields, and field type.
+  $input['#theme'] = 'input__signup__' . $field->fieldType;
+
   if ($form_state) {
     // We can't manually set the default values because we don't seem to have the values in the form state.
     // drupal_set_message(var_export($key, TRUE));
