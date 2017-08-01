@@ -18,6 +18,7 @@ use Drupal\getresponse_forms\FieldPluginCollection;
  *   label = @Translation("Getresponse Forms Form"),
  *   fieldable = FALSE,
  *   handlers = {
+ *     "access" = "Drupal\getresponse_forms\GetresponseFormsFormAccessControlHandler",
  *     "view_builder" = "Drupal\getresponse_forms\GetresponseFormsFormViewBuilder",
  *     "list_builder" = "Drupal\getresponse_forms\Controller\GetresponseFormsListBuilder",
  *     "form" = {
