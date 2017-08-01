@@ -164,7 +164,10 @@ function getresponse_forms_drupal_form_element($field, &$fieldset = NULL, $form_
   // This division based on https://www.drupal.org/files/drupal8.theme-input.23.patch
   // from https://www.drupal.org/node/1812724
   $input_types = ['button', 'image_button', 'textfield', 'tel', 'email', 'url', 'search', 'number', 'range', 'color', 'password', 'checkbox', 'radio', 'file'];
-  $match_types = ['checkboxes', 'select', 'radios', 'container', 'vertical_tabs'];
+  $match_types = ['select', 'radios', 'container', 'vertical_tabs'];
+  // $known_weird = ['checkboxes'] // the wrapper gets theme hook checkboxes, while
+  // the element gets form_element__checkbox, and then the checkboxes themselves inside
+  // the element get input__checkbox (per above).
   if (in_array($input['#type'], $input_types)) {
     $input['#theme'] = 'input__' . $input['#type'] . '__signup__' . $field->fieldType;
   }
