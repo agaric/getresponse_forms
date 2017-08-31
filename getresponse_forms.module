@@ -156,7 +156,7 @@ function getresponse_forms_drupal_form_element($field, &$fieldset = NULL, $form_
   }
 
   // Special cases for GetResponse hidden defined fields:
-  if ($field->hidden === TRUE) {
+  if (isset($field->hidden) && $field->hidden === TRUE) {
     $input['#type'] = 'hidden';
   }
 
