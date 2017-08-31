@@ -203,9 +203,8 @@ class GetresponseFormsPageForm extends FormBase {
     $api     = new Api($api_key);
     $result  = $api->addContact($request);
 
+    $list = reset(getresponse_get_lists([$list_id]));
     if (isset($result->httpStatus) && $result->httpStatus >= 400) {
-      $list = reset(getresponse_get_lists([$list_id]));
-
       drupal_set_message(t('There was a problem with your newsletter signup to %list.',
         ['%list' => $list->name]), 'warning');
 
