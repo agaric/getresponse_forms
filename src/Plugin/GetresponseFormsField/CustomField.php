@@ -77,6 +77,7 @@ class CustomField extends PluginBase implements ConfigurableFieldInterface {
 
   /**
    * {@inheritdoc}
+   * TODO update/use or remove
    */
   public function getSummary() {
     $summary = [
