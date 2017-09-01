@@ -94,8 +94,8 @@ function getresponse_forms_drupal_form_element($field, &$fieldset = NULL, $form_
       $input['#type'] = 'select';
 
       $choices = array();
-      foreach ($field->values as $key => $choice) {
-        $choices[$key] = $choice;
+      foreach ($field->values as $choice_key => $choice) {
+        $choices[$choice_key] = $choice;
       }
 
       $input['#options'] = $choices;
@@ -107,8 +107,8 @@ function getresponse_forms_drupal_form_element($field, &$fieldset = NULL, $form_
       $input['#type'] = 'radios';
 
       $choices = array();
-      foreach ($field->values as $key => $choice) {
-        $choices[$key] = $choice;
+      foreach ($field->values as $choice_key => $choice) {
+        $choices[$choice_key] = $choice;
       }
 
       $input['#options'] = $choices;
@@ -124,8 +124,8 @@ function getresponse_forms_drupal_form_element($field, &$fieldset = NULL, $form_
       else {
         $input['#type'] = 'checkboxes';
         $choices = array();
-        foreach ($field->values as $key => $choice) {
-          $choices[$key] = $choice;
+        foreach ($field->values as $choice_key => $choice) {
+          $choices[$choice_key] = $choice;
         }
         $input['#options'] = $choices;
       }
