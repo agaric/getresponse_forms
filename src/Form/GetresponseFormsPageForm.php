@@ -182,15 +182,35 @@ class GetresponseFormsPageForm extends FormBase {
       ],
       "customFieldValues" => [],
     ];
+
     foreach ($this->signup->getFields() as $field) {
+\Drupal::logger('getresponse_forms')->error('Field %def.', ['%def' => var_export($field, TRUE)]);
+\Drupal::logger('getresponse_forms')->error('Fieldtype %def.', ['%def' => $field->fieldType]);
       $definition = $field->getPluginDefinition();
       if (isset($definition['customFieldId'])) {
         $key = $definition['name'];
         $value = $form_state->getValue($key);
         if ($value) {
+          $arrayed_value = is_array($value) ? $value : [$value];
+          // For any select field we must replace the key with the real value.
+          $gr_fields = getresponse_get_custom_fields();
+          if (isset($gr_fields[$definition['customFieldId']])) {
+            $field = $gr_fields[$definition['customFieldId']];
+          }
+          if (in_array($field->fieldType, ['single_select', 'radio', 'checkbox',])) {
+            $prepped_value = [];
+            $options = $form[$key]['#options'];
+            foreach ($arrayed_value as $val) {
+              $prepped_value[] = $options[$val];
+            }
+          }
+          else {
+            $prepped_value = $arrayed_value;
+          }
+
           $request["customFieldValues"][] = [
             "customFieldId" => $definition['customFieldId'],
-            "value" => is_array($value) ? $value : [$value],
+            "value" => $prepped_value,
           ];
         }
       }
