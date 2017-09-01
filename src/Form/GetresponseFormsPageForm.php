@@ -155,9 +155,6 @@ class GetresponseFormsPageForm extends FormBase {
 
     $subscribe_lists = array();
 
-    // Filter out blank fields so we don't erase values on the GetResponse side.
-    $custom_fields = array_filter($form_state->getValue('custom_fields'));
-
     $getresponse_lists = $form_state->getValue('getresponse_lists');
 
     // If we only have one list we won't have checkbox values to investigate.
