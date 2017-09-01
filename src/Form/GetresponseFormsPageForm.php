@@ -201,7 +201,11 @@ class GetresponseFormsPageForm extends FormBase {
             $prepped_value = [];
             $options = $form[$key]['#options'];
             foreach ($arrayed_value as $val) {
-              $prepped_value[] = $options[$val];
+              // The real results from a form are always string, thus we want to
+              // keep '0' and throw out 0.
+              if (gettype($val) === 'string') {
+                $prepped_value[] = $options[$val];
+              }
             }
           }
           else {
