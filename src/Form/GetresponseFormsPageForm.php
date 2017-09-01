@@ -184,8 +184,6 @@ class GetresponseFormsPageForm extends FormBase {
     ];
 
     foreach ($this->signup->getFields() as $field) {
-\Drupal::logger('getresponse_forms')->error('Field %def.', ['%def' => var_export($field, TRUE)]);
-\Drupal::logger('getresponse_forms')->error('Fieldtype %def.', ['%def' => $field->fieldType]);
       $definition = $field->getPluginDefinition();
       if (isset($definition['customFieldId'])) {
         $key = $definition['name'];
