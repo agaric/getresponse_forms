@@ -147,7 +147,7 @@ class GetresponseForms extends ConfigEntityBase implements GetresponseFormsInter
    * {@inheritdoc}
    */
   public function getFields() {
-    if (!$this->fieldsCollection) {
+    if (!isset($this->fieldsCollection) || !$this->fieldsCollection) {
       $this->fieldsCollection = new FieldPluginCollection($this->getFieldPluginManager(), $this->fields);
       $this->fieldsCollection->sort();
     }
