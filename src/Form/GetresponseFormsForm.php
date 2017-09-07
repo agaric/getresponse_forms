@@ -153,12 +153,12 @@ class GetresponseFormsForm extends EntityForm {
     }
     $gr_admin_url = Link::fromTextAndUrl('GetResponse', Url::fromUri('https://app.getresponse.com', array('attributes' => array('target' => '_blank', 'rel' => 'noopener noreferrer'))));
     $form['gr_lists_config']['gr_lists'] = array(
-      '#type' => 'checkboxes',
+      '#type' => 'radios',
       '#title' => t('GetResponse Lists (Campaigns)'),
-      '#description' => t('Select which lists to show on your signup form. You can create additional lists at @GetResponse.',
+      '#description' => t('Select the list to which your signup form will submit to. You can create additional lists at @GetResponse.',
         array('@GetResponse' => $gr_admin_url->toString())),
       '#options' => $options,
-      '#default_value' => is_array($signup->gr_lists) ? $signup->gr_lists : array(),
+      '#default_value' => $signup->gr_lists,
       '#required' => TRUE,
     );
 
