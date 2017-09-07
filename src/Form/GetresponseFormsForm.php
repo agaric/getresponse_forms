@@ -377,10 +377,6 @@ class GetresponseFormsForm extends EntityForm {
     $signup = $this->getEntity();
     $signup->mode = array_sum($mode);
 
-    // $customfields = $form_state->getValue('customfields');
-
-    $gr_lists = $form_state->getValue('gr_lists') ? $form_state->getValue('gr_lists') : $signup->gr_lists;
-
     // Clear path value if mode doesn't include signup page.
     if (!isset($mode[GETRESPONSE_FORMS_PAGE])) {
       $signup->path = '';
