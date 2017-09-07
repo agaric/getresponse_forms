@@ -49,6 +49,7 @@ use Drupal\getresponse_forms\FieldPluginCollection;
  *     "destination",
  *     "gr_lists",
  *     "fields",
+ *     "notification_email"
  *   }
  * )
  */
@@ -70,6 +71,13 @@ class GetresponseForms extends ConfigEntityBase implements GetresponseFormsInter
    * @var string
    */
   public $title;
+
+  /**
+   * Notification e-mail address to send notice of signups to.
+   *
+   * @var string
+   */
+  public $notification_email;
 
   /**
    * The Signup Form GetResponse Lists.
