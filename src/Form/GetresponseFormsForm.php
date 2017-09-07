@@ -290,11 +290,19 @@ class GetresponseFormsForm extends EntityForm {
 
 
 
-    $form['subscription_settings'] = array(
+    $form['notification_settings'] = [
       '#type' => 'details',
-      '#title' => t('Subscription Settings'),
-      '#open' => TRUE,
-    );
+      '#title' => t('Send notification of signups'),
+      '#open' => FALSE,
+    ];
+    $form['notification_settings']['notification_email'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('E-mail'),
+      '#size' => 35,
+      '#maxlength' => 100,
+      '#default_value' => $signup->notification_email,
+      '#description' => $this->t('E-mail address to send administrative notification of signups to.'),
+    ];
 
     return $form;
   }
