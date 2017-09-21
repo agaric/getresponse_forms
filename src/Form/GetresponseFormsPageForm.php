@@ -67,7 +67,7 @@ class GetresponseFormsPageForm extends FormBase {
       getresponse_forms_drupal_form_element($field, $form, $form_state);
     }
 
-    $lists = getresponse_get_lists($this->signup->gr_lists);
+    $lists = getresponse_get_lists([$this->signup->gr_lists]);
     $lists_count = (!empty($lists)) ? count($lists) : 0;
     if (empty($lists)) {
       drupal_set_message($this->t('The subscription service is currently unavailable. Please try again later.'), 'warning');
