@@ -20,7 +20,7 @@ class GetresponseFormsListBuilder extends ConfigEntityListBuilder {
   public function buildHeader() {
     $header['label'] = $this->t('Label');
     $header['display_modes'] = $this->t('Display Modes');
-    $header['lists'] = $this->t('GetResponse Lists');
+    $header['lists'] = $this->t('GetResponse List');
 
     return $header + parent::buildHeader();
   }
@@ -67,18 +67,16 @@ class GetresponseFormsListBuilder extends ConfigEntityListBuilder {
         break;
     }
 
-    $list_labels = array();
-    foreach ($entity->gr_lists as $list_id) {
-      if (!empty($list_id) && isset($gr_lists[$list_id])) {
-        $list_url = Url::fromUri('https://app.getresponse.com/lists?id=' . $gr_lists[$list_id]->campaignId, array('attributes' => array('target' => '_blank', 'rel' => 'noopener noreferrer')));
-        $list_link = [
-          '#title' => $this->t($gr_lists[$list_id]->name),
-          '#type' => 'link',
-          '#url' => $list_url,
-        ];
-        $list_labels[] = $list_link;
-        $list_labels[] = array('#markup' => ', ');
-      }
+    $list_id = $entity->gr_lists;
+    if (!empty($list_id) && isset($gr_lists[$list_id])) {
+      $list_url = Url::fromUri('https://app.getresponse.com/lists?id=' . $gr_lists[$list_id]->campaignId, array('attributes' => array('target' => '_blank', 'rel' => 'noopener noreferrer')));
+      $list_link = [
+        '#title' => $this->t($gr_lists[$list_id]->name),
+        '#type' => 'link',
+        '#url' => $list_url,
+      ];
+      $list_labels[] = $list_link;
+      $list_labels[] = array('#markup' => ', ');
     }
 
     // Remove the last comma from the $list_labels array.
