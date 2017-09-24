@@ -153,26 +153,9 @@ class GetresponseFormsPageForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     global $base_url;
 
-    $subscribe_lists = array();
-
     $getresponse_lists = $form_state->getValue('getresponse_lists');
 
-    // If we only have one list we won't have checkbox values to investigate.
-    if (count(array_filter($this->signup->gr_lists)) == 1) {
-      $subscribe_lists[0] = array(
-        'subscribe' => reset($this->signup->gr_lists),
-      );
-    }
-    else {
-      // We can look at the checkbox values now.
-      foreach ($getresponse_lists as $list) {
-        if ($list['subscribe']) {
-          $subscribe_lists[] = $list;
-        }
-      }
-    }
-
-    $list_id = reset(reset($subscribe_lists));
+    $list_id = $this->signup->gr_lists;
 
     $request = [
       "name" => $form_state->getValue('getresponse_forms_name_field'),
