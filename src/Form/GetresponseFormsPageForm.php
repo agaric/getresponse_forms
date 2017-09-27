@@ -68,37 +68,17 @@ class GetresponseFormsPageForm extends FormBase {
     }
 
     $lists = getresponse_get_lists([$this->signup->gr_lists]);
-    $lists_count = (!empty($lists)) ? count($lists) : 0;
     if (empty($lists)) {
       drupal_set_message($this->t('The subscription service is currently unavailable. Please try again later.'), 'warning');
     }
 
-    if ($lists_count > 1) {
-      $options = [];
-      foreach ($lists as $list) {
-        $options[$list->campaignId] = $list->name;
-
-        $form['getresponse_lists'] = [
-          '#type' => 'checkboxes',
-          '#title' => t('Subscriptions'),
-          '#options' => $options,
-          '#required' => TRUE,
-//          '#default_value' => $form_state->getValue('getresponse_lists', []),
-          '#weight' => 80,
-        ];
-
-      }
-    }
-    else {
-      $list = reset($lists);
-      $form['getresponse_lists'] = array(
-        '#type' => 'hidden',
-        '#title' => $list->name,
-        '#value' => $list->campaignId,
-        '#weight' => 80,
-      );
-
-    }
+    $list = reset($lists);
+    $form['getresponse_lists'] = array(
+      '#type' => 'hidden',
+      '#title' => $list->name,
+      '#value' => $list->campaignId,
+      '#weight' => 80,
+    );
 
     $form['actions'] = ['#type' => 'actions', '#weight' => 99];
     $form['actions']['submit'] = [
