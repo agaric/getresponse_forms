@@ -195,12 +195,9 @@ class GetresponseFormsPageForm extends FormBase {
       \Drupal::logger('getresponse_forms')->error('An error occurred while creating contact with request: {request}.  GetResponse responded: {result}', ['request' => var_export($request, TRUE), 'result' => var_export($result, TRUE)]);
     }
     else {
-      $successes[] = $list->name;
-      drupal_set_message($list->name);
-    }
-
-    if (count($successes) && strlen($this->signup->confirmation_message)) {
-      drupal_set_message($this->signup->confirmation_message, 'status');
+      if (strlen($this->signup->confirmation_message)) {
+        drupal_set_message($this->signup->confirmation_message, 'status');
+      }
     }
 
     $destination = $this->signup->destination;
