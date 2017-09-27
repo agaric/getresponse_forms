@@ -139,12 +139,34 @@ class GetresponseFormsPageForm extends FormBase {
           }
           if (in_array($field->fieldType, ['single_select', 'radio', 'checkbox',])) {
             $prepped_value = [];
-            $options = $form[$key]['#options'];
+            $single_checkbox = FALSE;
+            if (isset($form[$key]['#options'])) {
+              $options = $form[$key]['#options'];
+            }
+            else {
+              // Single checkboxes do not have values in '#options' *and* they
+              // need to be given an empty zero value and have their '0' result
+              // used for '1'.
+              if (count($field->values) === 1) {
+                $single_checkbox = TRUE;
+                $value = array_pop($field->values);
+                $options = ['0' => '', '1' => $value];
+              }
+              else {
+                \Drupal::logger('getresponse_forms')->error('Unexpected number of options {options} for field {field}', ['options' => var_export($field->value, TRUE), 'field' => var_export($form[$key], TRUE)]);
+              }
+            }
             foreach ($arrayed_value as $val) {
               // The real results from a form are always string, thus we want to
               // keep '0' and throw out 0.
               if (gettype($val) === 'string') {
                 $prepped_value[] = $options[$val];
+              }
+              else {
+                // Except for single checkbox forms apparently!?!
+                if ($single_checkbox) {
+                  $prepped_value[] = $options[$val];
+                }
               }
             }
           }
