@@ -104,27 +104,6 @@ class GetresponseFormsPageForm extends FormBase {
       $form_state->setErrorByName('getresponse_forms_email_field', t("Please enter your e-mail address."));
     }
 
-    // For forms that allow subscribing to multiple lists
-    // ensure at least one list has been selected.
-
-    // Get the enabled lists for this form.
-    $enabled_lists = array_filter($signup->gr_lists);
-    if (count($enabled_lists) > 1) {
-
-      // Filter the selected lists out of the form values.
-      $selected_lists = array_filter($form_state->getValue('getresponse_lists'),
-        function($list) {
-          return $list['subscribe'];
-        }
-      );
-
-      // If a list has been selected, validation passes.
-      if (!empty($selected_lists)) {
-        return;
-      }
-
-      $form_state->setErrorByName('getresponse_lists', t("Please select at least one list to subscribe to."));
-    }
   }
 
   /**
